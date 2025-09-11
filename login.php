@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $message = "";
 $messageType = "";
 
@@ -8,7 +10,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $utenti = json_decode(file_get_contents("data/utenti.json"), true);
     if (isset($utenti[$email])) {
         if ($utenti[$email]["password"] === $password) {
+
+            $_SESSION["loggedin"] = true; // Imposta la variabile di sessione per l'utente loggato
+
+            $_SESSION['user'] = $email; // Imposta la sessione per l'utente loggato
+
+            $_SESSION['user_name'] = $utenti[$email]["nome"] ?? "Utente"; // Salva il nome dell'utente (se esiste nel JSON)
+            // L'operatore ?? significa: "se esiste usa questo, altrimenti usa 'Utente'"
+
+            // Salva quando ha fatto login (timestamp Unix)
+            $_SESSION['login_time'] = time();
+
+            // Aggiorna l'ultimo accesso dell'utente nel file JSON
+            $utenti[$email]["ultimo_accesso"] = date('Y-m-d H:i:s');
+            file_put_contents("utenti.json", json_encode($utenti, JSON_PRETTY_PRINT));
+
             header('Location: dashboard.php');
+
+            exit();
+            // Perché exit()?
+            // header() dice al browser "vai a user-page.php"
+            // Ma il PHP continuerebbe a eseguire il resto del codice!
+            // exit() ferma tutto, così il redirect funziona correttamente
+
         } else {
             $message = "Password non corretta.";
             $messageType = "danger";

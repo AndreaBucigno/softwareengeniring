@@ -1,3 +1,13 @@
+<?php
+session_start();
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+  header("location: login.php");
+  exit;
+} else {
+  // L'utente è loggato, puoi accedere alla pagina quindi prenderà le infromazioni dal file json e compilerà le tabelle
+}
+?>
+
 <!DOCTYPE html>
 <html lang="it">
 
