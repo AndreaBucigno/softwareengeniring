@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoftwarEngeniring - Password Recovery</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+
+    </nav>
+    <div class="container login-container mt-3">
+        <div class="text-center mb-4">
+            <img src="assets/images/logo_softwarengineering_blubordobianco.png" alt="Logo" class="Logo">
+        </div>
+
+        <form class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="recoveryEmail" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="recoveryEmail" placeholder="Inserisci l'email" required>
+                <div class="form-text">Ti invieremo le istruzioni per recuperare la password.</div>
+                <div class="invalid-feedback">
+                    Please provide a valid email address.
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-block mb-4">Recupera password</button>
+            </div>
+
+            <div class="text-center">
+                <p>Ricordi la password? <a href="login.php">Torna al login</a></p>
+            </div>
+
+        </form>
+    </div>
+</body>
+
+</html>

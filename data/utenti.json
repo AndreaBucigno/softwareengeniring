@@ -1,0 +1,10 @@
+{
+    "admin@softwarengineering.com": {
+        "password": "admin123",
+        "nome": "Administrator"
+    },
+    "test@test.com": {
+        "password": "test123",
+        "nome": "Test User"
+    }
+}
