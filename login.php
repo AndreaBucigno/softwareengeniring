@@ -28,11 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header('Location: dashboard.php');
 
             exit();
-            // Perché exit()?
-            // header() dice al browser "vai a user-page.php"
-            // Ma il PHP continuerebbe a eseguire il resto del codice!
-            // exit() ferma tutto, così il redirect funziona correttamente
-
         } else {
             $message = "Password non corretta.";
             $messageType = "danger";
