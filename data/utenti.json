@@ -6,7 +6,7 @@
         "ruolo": "amministratore",
         "telefono": "+39 075 123456",
         "data_registrazione": "2024-01-15",
-        "ultimo_accesso": "",
+        "ultimo_accesso": "2025-09-12 18:22:37",
         "attivo": true
     },
     "test@test.com": {
@@ -16,8 +16,8 @@
         "ruolo": "utente",
         "telefono": "+39 075 654321",
         "data_registrazione": "2024-03-20",
-        "ultimo_accesso": "",
-        "attivo": true
+        "ultimo_accesso": "2025-09-12 18:24:46",
+        "attivo": false
     },
     "demo@demo.com": {
         "password": "demo123",
@@ -26,7 +26,7 @@
         "ruolo": "utente",
         "telefono": "+39 075 789012",
         "data_registrazione": "2024-08-10",
-        "ultimo_accesso": "",
+        "ultimo_accesso": "2025-09-12 18:16:23",
         "attivo": true
     }
 }

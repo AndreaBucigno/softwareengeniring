@@ -1,39 +1,45 @@
 <?php
+
 session_start();
 
 $message = "";
 $messageType = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST["email"];
-    $password = $_POST["password"];
+    $email = trim($_POST["email"]);
+    $password = trim($_POST["password"]);
+
     $utenti = json_decode(file_get_contents("data/utenti.json"), true);
+
     if (isset($utenti[$email])) {
-        if ($utenti[$email]["password"] === $password) {
-
-            $_SESSION["loggedin"] = true; // Imposta la variabile di sessione per l'utente loggato
-
-            $_SESSION['user'] = $email; // Imposta la sessione per l'utente loggato
-
-            $_SESSION['user_name'] = $utenti[$email]["nome"] ?? "Utente"; // Salva il nome dell'utente (se esiste nel JSON)
-            // L'operatore ?? significa: "se esiste usa questo, altrimenti usa 'Utente'"
-
-            // Salva quando ha fatto login (timestamp Unix)
+        // Controllo stato attivo (gestisce sia booleano che stringa)
+        if ($utenti[$email]["attivo"] === false || $utenti[$email]["attivo"] === "false") {
+            $message = "Il tuo account non è attivo. Contatta l'amministratore.";
+            $messageType = "warning";
+        } elseif ($password === $utenti[$email]["password"]) {
+            $_SESSION["loggedin"] = true;
+            $_SESSION['user'] = $email;
+            $_SESSION['user_name'] = $utenti[$email]["nome"] ?? "Utente";
             $_SESSION['login_time'] = time();
 
-            // Aggiorna l'ultimo accesso dell'utente nel file JSON
+            // Aggiorna ultimo accesso
             $utenti[$email]["ultimo_accesso"] = date('Y-m-d H:i:s');
-            file_put_contents("utenti.json", json_encode($utenti, JSON_PRETTY_PRINT));
+            file_put_contents("data/utenti.json", json_encode($utenti, JSON_PRETTY_PRINT), LOCK_EX);  // LOCK_EX per evitare problemi di concorrenza cioè più utenti che scrivono contemporaneamente
 
             header('Location: dashboard.php');
-
             exit();
+            // Perché exit()?
+            // header() dice al browser "vai a user-page.php"
+            // Ma il PHP continuerebbe a eseguire il resto del codice!
+            // exit() ferma tutto, così il redirect funziona correttamente
+
+
         } else {
-            $message = "Password non corretta.";
+            $message = "Credenziali non corrette.";
             $messageType = "danger";
         }
     } else {
-        $message = "Email non trovata nel database.";
+        $message = "Credenziali non corrette.";
         $messageType = "danger";
     }
 }
