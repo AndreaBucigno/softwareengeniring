@@ -1,3 +1,24 @@
+<?php
+session_start();
+
+$message = ""; // Messaggio di feedback
+$messageType = ""; // Tipo di messaggio (success, danger, warning)
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = trim($_POST["email"]);
+    $utenti = json_decode(file_get_contents("data/utenti.json"), true);
+
+    if (isset($utenti[$email])) {
+        $message = "Ti abbiamo inviato le istruzioni per recuperare la password.";
+        $messageType = "success";
+    } else {
+        $message = "L'email non è registrata.Verifica se l'hai inserita correttamente nel caso contrario chiedi ad un amministratore di registrarti.";
+        $messageType = "danger";
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="it">
 
@@ -29,10 +50,17 @@
             <img src="assets/images/logo_softwarengineering_blubordobianco.png" alt="Logo" class="Logo">
         </div>
 
-        <form class="needs-validation" novalidate>
+        <!--Alert Bootstrap-->
+        <?php if (!empty($message)) : ?>
+            <div class="alert alert-<?php echo $messageType; ?> text-center">
+                <?php echo $message; ?>
+            </div>
+        <?php endif; ?>
+
+        <form class="needs-validation" method="POST" action="recupera-pass.php">
             <div class="mb-3">
                 <label for="recoveryEmail" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="recoveryEmail" placeholder="Inserisci l'email" required>
+                <input type="email" class="form-control" id="recoveryEmail" name="email" placeholder="Inserisci l'email" required>
                 <div class="form-text">Ti invieremo le istruzioni per recuperare la password.</div>
                 <div class="invalid-feedback">
                     Please provide a valid email address.
@@ -50,5 +78,11 @@
         </form>
     </div>
 </body>
+
+<script>
+    setTimeout(function() {
+        $('.alert').fadeOut('slow');
+    }, 5000);
+</script>
 
 </html>
