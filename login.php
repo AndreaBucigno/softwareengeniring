@@ -13,13 +13,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset($utenti[$email])) {
         // Controllo stato attivo (gestisce sia booleano che stringa)
-        if ($utenti[$email]["attivo"] === false || $utenti[$email]["attivo"] === "false") {
+        if ($utenti[$email]["attivo"] === false) {
             $message = "Il tuo account non è attivo. Contatta l'amministratore.";
             $messageType = "warning";
         } elseif ($password === $utenti[$email]["password"]) {
             $_SESSION["loggedin"] = true;
             $_SESSION['user'] = $email;
-            $_SESSION['user_name'] = $utenti[$email]["nome"] ?? "Utente";
+            $_SESSION['user_name'] = $utenti[$email]["nome"] ?? "UtenteGuest"; //se l'utente non ha un nome prende il nome di utenteGuest
             $_SESSION['login_time'] = time();
 
             // Aggiorna ultimo accesso
