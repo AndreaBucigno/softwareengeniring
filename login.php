@@ -1,42 +1,38 @@
 <?php
-
 session_start();
 
 $message = "";
 $messageType = "";
+$connessione = new mysqli("localhost", "root", "", "progettopcto_bucignoconsalvi");
+if ($connessione->connect_error) {
+    die("Connessione fallita: " . $connessione->connect_error);
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST["email"]);
     $password = trim($_POST["password"]);
 
-    $utenti = json_decode(file_get_contents("data/utenti.json"), true);
+    $sql = "SELECT * FROM utenti WHERE Email = ?";
+    $stmt = $connessione->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    if (isset($utenti[$email])) {
-        // Controllo stato attivo (gestisce sia booleano che stringa)
-        if ($utenti[$email]["attivo"] === false) {
-            $message = "Il tuo account non è attivo. Contatta l'amministratore.";
-            $messageType = "warning";
-        } elseif ($password === $utenti[$email]["password"]) {
+    if($result && $result->num_rows == 1) {
+        $row = $result->fetch_array(MYSQLI_ASSOC);
+
+
+        if($password === $row['password']) {
             $_SESSION["loggedin"] = true;
-            $_SESSION['user'] = $email;
-            $_SESSION['user_name'] = $utenti[$email]["nome"] ?? "UtenteGuest"; //se l'utente non ha un nome prende il nome di utenteGuest
-            $_SESSION['login_time'] = time();
-
-            // Aggiorna ultimo accesso
-            $utenti[$email]["ultimo_accesso"] = date('Y-m-d H:i:s');
-            file_put_contents("data/utenti.json", json_encode($utenti, JSON_PRETTY_PRINT), LOCK_EX);  // LOCK_EX per evitare problemi di concorrenza cioè più utenti che scrivono contemporaneamente
-           
-            if($utenti[$email]["ruolo"] === "admin"){
+            $_SESSION["email"] = $row['Email'];
+            $_SESSION["ruolo"] = $row['ruolo'];
+            if($row["ruolo"] === "admin"){
                 header('Location: admin.php');
                 exit();
             } else {
                 header('Location: dashboard.php'); 
                 exit();
             }
-            
-            
-
-
         } else {
             $message = "Credenziali non corrette.";
             $messageType = "danger";
@@ -45,6 +41,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $message = "Credenziali non corrette.";
         $messageType = "danger";
     }
+    $stmt->close();
+    $connessione->close();
 }
 ?>
 
