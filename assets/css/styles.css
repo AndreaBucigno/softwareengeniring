@@ -151,3 +151,16 @@ label {
 .btn-primary:hover {
     background-color: #0056b3;
 }
+
+.form-select{
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border: 1px solid #555;
+}
+
+.form-select:focus {
+    background-color: #1e1e1e;
+    border-color: #007bff;
+    color: #fff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
