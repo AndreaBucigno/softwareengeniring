@@ -14,7 +14,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SoftwarEngeniring - User Page</title>
+  <title>SoftwareEngeniring - User Page</title>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 

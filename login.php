@@ -25,13 +25,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Aggiorna ultimo accesso
             $utenti[$email]["ultimo_accesso"] = date('Y-m-d H:i:s');
             file_put_contents("data/utenti.json", json_encode($utenti, JSON_PRETTY_PRINT), LOCK_EX);  // LOCK_EX per evitare problemi di concorrenza cioè più utenti che scrivono contemporaneamente
-
-            header('Location: dashboard.php');
-            exit();
-            // Perché exit()?
-            // header() dice al browser "vai a user-page.php"
-            // Ma il PHP continuerebbe a eseguire il resto del codice!
-            // exit() ferma tutto, così il redirect funziona correttamente
+           
+            if($utenti[$email]["ruolo"] === "admin"){
+                header('Location: admin.php');
+                exit();
+            } else {
+                header('Location: dashboard.php'); 
+                exit();
+            }
+            
+            
 
 
         } else {
@@ -51,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SoftwarEngeniring - Login</title>
+    <title>SoftwareEngeniring - Login</title>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

@@ -3,10 +3,10 @@
         "password": "admin123",
         "nome": "Mario Rossi",
         "azienda": "Softwarengineering",
-        "ruolo": "amministratore",
+        "ruolo": "admin",
         "telefono": "+39 075 123456",
         "data_registrazione": "2024-01-15",
-        "ultimo_accesso": "2025-09-14 16:04:09",
+        "ultimo_accesso": "2025-09-15 16:28:46",
         "attivo": true
     },
     "test@test.com": {
