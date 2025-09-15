@@ -95,7 +95,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <input type="date" class="form-control" id="dataRegistrazione" name="dataRegistrazione" required>
                 
                 <br>
-                <label for="Attivo" class="form-label">Stato Attivo (true/false)</label>
+                <label for="Attivo" class="form-label">Stato Attivo</label>
                 <select class="form-select" aria-label="Default select example" name="Attivo" id="Attivo" required>
                     <option selected>Seleziona Stato</option>
                     <option value="true">true</option>
