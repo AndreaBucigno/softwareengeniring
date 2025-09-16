@@ -97,6 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <!-- Bottone toggle -->
             <div class="text-center mb-3">
                 <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#formUtente" aria-expanded="false" aria-controls="formUtente">
+                    <i class="bi bi-person-fill-add"></i>
                     Crea Nuovo Utente
                 </button>
             </div>

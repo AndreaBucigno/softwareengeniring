@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result && $result->num_rows == 1) {
         $row = $result->fetch_array(MYSQLI_ASSOC);
 
+
         if (password_verify($password, $row['password']) || $password === $row['password']) {
             $_SESSION["loggedin"] = true;
             $_SESSION["email"] = $row['Email'];
