@@ -22,7 +22,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $row = $result->fetch_array(MYSQLI_ASSOC);
 
 
+        //     IMPORTANTE
+
+        //da riguardare e da chiedere spiegazioni 
+
+        if ($row['attivo'] === "false") {
+            $message = "Account non attivo. Contatta l'amministratore per l'attivazione.";
+            $messageType = "warning";
+        }
+
         if (password_verify($password, $row['password']) || $password === $row['password']) {
+
             $_SESSION["loggedin"] = true;
             $_SESSION["email"] = $row['Email'];
             $_SESSION["ruolo"] = $row['ruolo'];
