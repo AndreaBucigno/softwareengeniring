@@ -76,7 +76,7 @@ $body .= '<!-- Bottone toggle -->
         <!-- Form collassabile -->
         <div class="collapse" id="formUtente">
             <div class="card card-body shadow-sm">
-                <form class="needs-validation" novalidate method="POST" action="admin_template.php" id="adminForm">
+                <form class="needs-validation" novalidate method="POST" action="admin.php" id="adminForm">
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Email address</label>
                         <input type="email" class="form-control" id="exampleInputEmail1" name="email" required>
