@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-$message = ""; // Messaggio di feedback
-$messageType = ""; // Tipo di messaggio (success, danger, warning)
+$message = ""; 
+$messageType = ""; 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST["email"]);

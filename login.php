@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 $message = "";
 $messageType = "";
 $connessione = new mysqli("localhost", "root", "", "progettopcto_bucignoconsalvi");
@@ -26,12 +27,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         //da riguardare e da chiedere spiegazioni 
 
-        if ($row['attivo'] === "false") {
+        if ($row['attivo'] == "false") {
             $message = "Account non attivo. Contatta l'amministratore per l'attivazione.";
             $messageType = "warning";
-        }
-
-        if (password_verify($password, $row['password']) || $password === $row['password']) {
+        }elseif (password_verify($password, $row['password']) || $password === $row['password']) {
 
             $_SESSION["loggedin"] = true;
             $_SESSION["email"] = $row['Email'];
@@ -81,6 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
     <div class="container login-container mt-3">
+        <div class="login-container">
         <div class="text-center mb-4">
             <img src="assets/images/logo_softwarengineering_blubordobianco.png" alt="Logo" class="Logo">
         </div>
@@ -102,9 +102,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="exampleInputPassword1" class="form-label">Password</label>
                 <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
             </div>
+            
             <div class="forgot-pass">
                 <a href="recupera-pass.php">Password dimenticata?</a>
             </div>
+            <br><br>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
             </div>
@@ -113,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </form>
     </div>
-
+    </div>
     <script>
         // sparisce dopo 5 secondi
         setTimeout(function() {
