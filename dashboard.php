@@ -4,7 +4,6 @@ $title = "User Page";
 $body = '
 <div class="container">
     <br><br><br>
-    <h2 class="text-center mb-4">Benvenuto nella tua dashboard</
     <div class="container-T1">
         <table class="tabelle" id="miaTabella">
             <thead>
