@@ -31,11 +31,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["email"] = $row['Email'];
             $_SESSION["ruolo"] = $row['ruolo'];
             $_SESSION["id_utente"] = $row['ID'];
-
+            $_SESSION["ultimo_accesso"] = $row['ultimo_accesso'];
+                $data_ora_corrente = date("Y-m-d H:i:s");   
+                $update_sql = "UPDATE utenti SET ultimo_accesso = ? WHERE ID = ?";
+                $update_stmt = $connessione->prepare($update_sql);
+                $update_stmt->bind_param("si", $data_ora_corrente, $row['ID']);
+                $update_stmt->execute();
+                $update_stmt->close();
             if ($row["ruolo"] === "admin") {
+                
                 header('Location: admin.php');
                 exit();
             } else {
+
                 header('Location: dashboard.php');
                 exit();
             }

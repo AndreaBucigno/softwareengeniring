@@ -54,6 +54,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $connessione->close();
 }
 
+
+$connessione = new mysqli("localhost", "root", "", "progettopcto_bucignoconsalvi");
+if ($connessione->connect_error) {
+    die("Connessione fallita: " . $connessione->connect_error);
+}
+//Costruzione SELECT ID Utente
+$SELECT_ID = "<select class='form-select' name='id_utente' id='id_utente' required>
+                <option value='' disabled selected>Seleziona ID Utente</option>";
+$sql = "SELECT ID, Email FROM utenti";
+$result = $connessione->query($sql);
+foreach ($result as $row) {
+    $SELECT_ID .= "<option value='" . $row['ID'] . "'>" . $row['ID'] . " - " . $row['Email'] . "</option>";
+}
+$SELECT_ID .= "</select>";
+
+
+
+
+
+
+
 //Costruione utenti registrati
 
 $connessione = new mysqli("localhost", "root", "", "progettopcto_bucignoconsalvi");
@@ -252,6 +273,31 @@ $body .= '<!-- Bottone toggle -->
 
                             <div class="text-center">
                                 <button type="submit" class="btn btn-success btn-block">Crea Utente</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottone toggle 2  -->
+                <div class="text-center mb-3">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#formUtente" aria-expanded="false" aria-controls="formUtente" id="toggleFormButton">
+                        <i class="bi bi-person-fill-add"></i>
+                        Crea Nuovo Utente
+                    </button>
+                </div>
+                <!-- Form collassabile -->
+                <div class="collapse" id="formUtente">
+                    <div class="card card-body shadow-sm">
+                        <form class="needs-validation" novalidate method="POST" action="admin.php" id="adminForm">
+                            ' . $SELECT_ID . '
+                            <div class="mb-3">
+                                <label for="nome_dominio" class="form-label">Nome Dominio</label>
+                                <input type="text" class="form-control" id="nome_dominio" name="nome_dominio" required> 
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success btn-block">Crea Dominio</button>
                             </div>
                         </form>
                     </div>
