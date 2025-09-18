@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SoftwareEngeniring - {{title}}</title>
+  <link rel="icon" type="image/png" href="assets/images/logo_softwarengineering_blubordobianco.png"/>
   
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

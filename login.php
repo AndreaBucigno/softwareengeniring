@@ -22,11 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result && $result->num_rows == 1) {
         $row = $result->fetch_array(MYSQLI_ASSOC);
 
-
-        //     IMPORTANTE
-
-        //da riguardare e da chiedere spiegazioni 
-
         if ($row['attivo'] == "false") {
             $message = "Account non attivo. Contatta l'amministratore per l'attivazione.";
             $messageType = "warning";
@@ -35,6 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["loggedin"] = true;
             $_SESSION["email"] = $row['Email'];
             $_SESSION["ruolo"] = $row['ruolo'];
+            $_SESSION["id_utente"] = $row['ID'];
+
             if ($row["ruolo"] === "admin") {
                 header('Location: admin.php');
                 exit();

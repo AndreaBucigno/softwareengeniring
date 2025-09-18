@@ -54,7 +54,107 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $connessione->close();
 }
 
+//Costruione utenti registrati
 
+$connessione = new mysqli("localhost", "root", "", "progettopcto_bucignoconsalvi");
+if ($connessione->connect_error) {
+    die("Connessione fallita: " . $connessione->connect_error);
+}
+
+$TABELLE_UTENTI = "";
+$sql = "SELECT * FROM utenti";
+$result = $connessione->query($sql);
+foreach($result as $row) {
+    $TABELLE_UTENTI .= "<tr>
+                <td>" . $row['ID'] . "</td>
+                <td>" . $row['Email'] . "</td>
+                <td>" . $row['Nome'] . "</td>
+                <td>" . $row['ruolo'] . "</td>
+                <td>" . $row['attivo'] . "</td>
+                <td>" . $row['data_registrazione'] . "</td>
+                <td>
+                    <button class='btn btn-warning btn-sm me-2'>
+                        <i class='bi bi-pencil-square'></i> Modifica
+                    </button>
+                    <button class='btn btn-danger btn-sm'>
+                        <i class='bi bi-trash'></i> Elimina
+                    </button> 
+                   
+                </td>
+                <td><a class='btn btn-success btn-sm' href='/inc/filter.inc.php' ><i class='bi bi-filter'></i>Filtra</a></td>
+            </tr>";
+}
+
+//Costruione domini registrati
+
+$TABELLA_DOMINI="";
+$sql="SELECT * FROM domini";
+$result = $connessione->query($sql);
+foreach($result as $row) {
+    $TABELLA_DOMINI .= "<tr>
+                <td>" . $row['id'] . "</td>
+                <td>" . $row['id_utente'] . "</td>
+                <td>" . $row['nome_dominio'] . "</td>
+                <td>" . $row['data_registrazione'] . "</td>
+                
+                <td>
+                    <button class='btn btn-warning btn-sm me-2'>
+                        <i class='bi bi-pencil-square'></i> Modifica
+                    </button>
+                    <button class='btn btn-danger btn-sm'>
+                        <i class='bi bi-trash'></i> Elimina
+                    </button> 
+                </td>
+            </tr>";
+}
+
+//Costruione files registrati
+
+$TABELLA_FILES="";
+$sql="SELECT * FROM files"; 
+$result = $connessione->query($sql);
+foreach($result as $row) {
+    $TABELLA_FILES .= "<tr>
+                <td>" . $row['id'] . "</td>
+                <td>" . $row['id_utente'] . "</td>
+                <td>" . $row['nome_file'] . "</td>
+                <td>" . $row['data_upload'] . "</td>
+                
+                <td>
+                    <button class='btn btn-warning btn-sm me-2'>
+                        <i class='bi bi-pencil-square'></i> Modifica
+                    </button>
+                    <button class='btn btn-danger btn-sm'>
+                        <i class='bi bi-trash'></i> Elimina
+                    </button> 
+                </td>
+            </tr>";
+}
+
+//Costruione email registrati
+
+$TABELLA_EMAIL="";
+$sql="SELECT * FROM email";
+$result = $connessione->query($sql);
+foreach($result as $row) {
+    $TABELLA_EMAIL .= "<tr>
+                <td>" . $row['id'] . "</td>
+                <td>" . $row['id_utente'] . "</td>
+                <td>" . $row['id_dominio'] . "</td>
+                <td>" . $row['nome_email'] . "</td>
+                
+                <td>
+                    <button class='btn btn-warning btn-sm me-2'>
+                        <i class='bi bi-pencil-square'></i> Modifica
+                    </button>
+                    <button class='btn btn-danger btn-sm'>
+                        <i class='bi bi-trash'></i> Elimina
+                    </button> 
+                </td>
+            </tr>";
+}
+
+$connessione->close();
 
 $title = "AdminPage";
 
@@ -107,7 +207,7 @@ $body .= '<!-- Bottone toggle -->
                                 <select class="form-select" name="ruolo" id="ruolo" required>
                                     <option value="" disabled selected>Seleziona tipo di utente</option>
                                     <option value="admin">Admin</option>
-                                    <option value="utente">Utente</option>
+                                    <option value="user">Utente</option>
                                 </select>
                             </div>
 
@@ -143,51 +243,100 @@ $body .= '<!-- Bottone toggle -->
         <div class="col-lg-8">
             <div class="admin-container-large">
                 <h4 class="page-title mb-4">
-                    <i class="bi bi-table"></i> Gestione Dati
+                     Gestione dati
                 </h4>
+                <hr>
                 
                 <!-- Prima tabella -->
                 <div class="mb-4">
                     <h5 class="mb-3">
-                        <i class="bi bi-list-ul"></i> Tabella 1
+                       Gestione Utenti
                     </h5>
                     <div class="table-responsive">
                         <table class="table table-dark table-striped tabelle" id="tabella1">
                             <thead>
                                 <tr>
-                                    <th>Colonna 1</th>
-                                    <th>Colonna 2</th>
-                                    <th>Colonna 3</th>
-                                    <th>Colonna 4</th>
+                                    <th>ID</th>
+                                    <th>EMAIL</th>
+                                    <th>NOME</th>
+                                    <th>RUOLO</th>
+                                    <th>ATTIVO</th>
+                                    <th>DATA REGISTRAZIONE</th>
                                     <th>Azioni</th>
+                                    <th>Filtra</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Tabella vuota - da popolare -->
+                                '.$TABELLE_UTENTI.'
                             </tbody>
                         </table>
                     </div>
                 </div>
-
+                <hr>
                 <!-- Seconda tabella -->
                 <div class="mb-4">
                     <h5 class="mb-3">
-                        <i class="bi bi-grid"></i> Tabella 2
+                          Gestione Domini
                     </h5>
                     <div class="table-responsive">
                         <table class="table table-dark table-striped tabelle" id="tabella2">
                             <thead>
                                 <tr>
-                                    <th>Campo A</th>
-                                    <th>Campo B</th>
-                                    <th>Campo C</th>
-                                    <th>Campo D</th>
-                                    <th>Campo E</th>
-                                    <th>Azioni</th>
+                                    <th>ID</th>
+                                    <th>ID_UTENTE</th>
+                                    <th>NOME DOMINIO</th>
+                                    <th>DATA CREAZIONE</th>
+                                    <th>AZIONI</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Tabella vuota - da popolare -->
+                               '.$TABELLA_DOMINI.'
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+                <!-- Terza tabella -->
+                <div class="mb-4">
+                    <h5 class="mb-3">
+                          Gestione Files
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped tabelle" id="tabella2">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>ID_UTENTE</th>
+                                    <th>NOME FILE</th>
+                                    <th>DATA UPLOAD</th>
+                                    <th>AZIONI</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               '.$TABELLA_FILES.'
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+                <!-- Quarta tabella -->
+                <div class="mb-4">
+                    <h5 class="mb-3">
+                          Gestione Email
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped tabelle" id="tabella2">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>ID_UTENTE</th>
+                                    <th>ID_DOMINIO</th>
+                                    <th>EMAIL</th>
+                                    <th>AZIONI</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               '.$TABELLA_EMAIL.'
                             </tbody>
                         </table>
                     </div>
