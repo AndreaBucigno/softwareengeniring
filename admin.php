@@ -54,10 +54,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $connessione->close();
 }
 
+
+
 $title = "AdminPage";
 
 $body = '<div class="container-fluid">
-    <div class="admin-container">';
+    <div class="row">
+        <!-- Colonna sinistra - Form creazione utente -->
+        <div class="col-lg-4">
+            <div class="admin-container">';
 
 if (!empty($message)) {
     $body .= '<div class="alert alert-' . $messageType . ' alert-dismissible fade show" role="alert">
@@ -66,69 +71,127 @@ if (!empty($message)) {
 }
 
 $body .= '<!-- Bottone toggle -->
-        <div class="text-center mb-3">
-            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#formUtente" aria-expanded="false" aria-controls="formUtente" id="toggleFormButton">
-                <i class="bi bi-person-fill-add"></i>
-                Crea Nuovo Utente
-            </button>
+                <div class="text-center mb-3">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#formUtente" aria-expanded="false" aria-controls="formUtente" id="toggleFormButton">
+                        <i class="bi bi-person-fill-add"></i>
+                        Crea Nuovo Utente
+                    </button>
+                </div>
+
+                <!-- Form collassabile -->
+                <div class="collapse" id="formUtente">
+                    <div class="card card-body shadow-sm">
+                        <form class="needs-validation" novalidate method="POST" action="admin.php" id="adminForm">
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="exampleInputEmail1" name="email" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nome e Cognome</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="numero" class="form-label">Numero di Telefono</label>
+                                <input type="text" class="form-control" id="numero" name="numero" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="NomeAzienda" class="form-label">Nome azienda</label>
+                                <input type="text" class="form-control" id="NomeAzienda" name="NomeAzienda" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="ruolo" class="form-label">Ruolo</label>
+                                <select class="form-select" name="ruolo" id="ruolo" required>
+                                    <option value="" disabled selected>Seleziona tipo di utente</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="utente">Utente</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="dataRegistrazione" class="form-label">Data Registrazione</label>
+                                <input type="date" class="form-control" id="dataRegistrazione" name="dataRegistrazione" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="Attivo" class="form-label">Stato Attivo</label>
+                                <select class="form-select" name="Attivo" id="Attivo" required>
+                                    <option value="" disabled selected>Seleziona Stato</option>
+                                    <option value="true">true</option>
+                                    <option value="false">false</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success btn-block">Crea Utente</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Form collassabile -->
-        <div class="collapse" id="formUtente">
-            <div class="card card-body shadow-sm">
-                <form class="needs-validation" novalidate method="POST" action="admin.php" id="adminForm">
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" name="email" required>
+        <!-- Colonna destra - Riquadro con le tabelle -->
+        <div class="col-lg-8">
+            <div class="admin-container-large">
+                <h4 class="page-title mb-4">
+                    <i class="bi bi-table"></i> Gestione Dati
+                </h4>
+                
+                <!-- Prima tabella -->
+                <div class="mb-4">
+                    <h5 class="mb-3">
+                        <i class="bi bi-list-ul"></i> Tabella 1
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped tabelle" id="tabella1">
+                            <thead>
+                                <tr>
+                                    <th>Colonna 1</th>
+                                    <th>Colonna 2</th>
+                                    <th>Colonna 3</th>
+                                    <th>Colonna 4</th>
+                                    <th>Azioni</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Tabella vuota - da popolare -->
+                            </tbody>
+                        </table>
                     </div>
+                </div>
 
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Nome e Cognome</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                <!-- Seconda tabella -->
+                <div class="mb-4">
+                    <h5 class="mb-3">
+                        <i class="bi bi-grid"></i> Tabella 2
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped tabelle" id="tabella2">
+                            <thead>
+                                <tr>
+                                    <th>Campo A</th>
+                                    <th>Campo B</th>
+                                    <th>Campo C</th>
+                                    <th>Campo D</th>
+                                    <th>Campo E</th>
+                                    <th>Azioni</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Tabella vuota - da popolare -->
+                            </tbody>
+                        </table>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="numero" class="form-label">Numero di Telefono</label>
-                        <input type="text" class="form-control" id="numero" name="numero" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="NomeAzienda" class="form-label">Nome azienda</label>
-                        <input type="text" class="form-control" id="NomeAzienda" name="NomeAzienda" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="ruolo" class="form-label">Ruolo</label>
-                        <select class="form-select" name="ruolo" id="ruolo" required>
-                            <option value="" disabled selected>Seleziona tipo di utente</option>
-                            <option value="admin">Admin</option>
-                            <option value="utente">Utente</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="dataRegistrazione" class="form-label">Data Registrazione</label>
-                        <input type="date" class="form-control" id="dataRegistrazione" name="dataRegistrazione" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="Attivo" class="form-label">Stato Attivo</label>
-                        <select class="form-select" name="Attivo" id="Attivo" required>
-                            <option value="" disabled selected>Seleziona Stato</option>
-                            <option value="true">true</option>
-                            <option value="false">false</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-success btn-block">Crea Utente</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>

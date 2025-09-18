@@ -1,4 +1,12 @@
 <?php
+
+session_start();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["ruolo"] !== "user") {
+    header("Location: login.php");
+    exit();
+}
+
 $title = "User Page";
 
 $body = '
