@@ -81,14 +81,26 @@ foreach($result as $row) {
                     </button> 
                    
                 </td>
-                <td><a class='btn btn-success btn-sm' href='/inc/filter.inc.php' ><i class='bi bi-filter'></i>Filtra</a></td>
+                
+                <td><a href='admin.php?filter_id=" . $row['ID'] . "' class='btn btn-success btn-sm'><i class='bi bi-filter'></i>Filtra</a></td>
             </tr>";
 }
+
+
+//Recupero filter_id da URL
+$filter_id = isset($_GET['filter_id']) ? $_GET['filter_id'] : null;
 
 //Costruione domini registrati
 
 $TABELLA_DOMINI="";
-$sql="SELECT * FROM domini";
+
+//condizione che verifica se filte id esiste per filtrare le tabelle
+if($filter_id){
+    $sql="SELECT * FROM domini WHERE id_utente = $filter_id";
+}else{
+    $sql="SELECT * FROM domini"; 
+}
+
 $result = $connessione->query($sql);
 foreach($result as $row) {
     $TABELLA_DOMINI .= "<tr>
@@ -111,7 +123,11 @@ foreach($result as $row) {
 //Costruione files registrati
 
 $TABELLA_FILES="";
-$sql="SELECT * FROM files"; 
+if($filter_id){
+    $sql="SELECT * FROM files WHERE id_utente = $filter_id";
+}else{
+    $sql="SELECT * FROM files"; 
+}
 $result = $connessione->query($sql);
 foreach($result as $row) {
     $TABELLA_FILES .= "<tr>
@@ -134,7 +150,11 @@ foreach($result as $row) {
 //Costruione email registrati
 
 $TABELLA_EMAIL="";
-$sql="SELECT * FROM email";
+if($filter_id){
+    $sql="SELECT * FROM email WHERE id_utente = $filter_id";
+}else{
+    $sql="SELECT * FROM email";
+}
 $result = $connessione->query($sql);
 foreach($result as $row) {
     $TABELLA_EMAIL .= "<tr>
@@ -252,6 +272,9 @@ $body .= '<!-- Bottone toggle -->
                     <h5 class="mb-3">
                        Gestione Utenti
                     </h5>
+                    <a class="btn btn-secondary mb-3" href="admin.php?filter_id="' .null.'">
+                        <i class="bi bi-x-circle"></i> Rimuovi Filtro</a>
+                     <br>
                     <div class="table-responsive">
                         <table class="table table-dark table-striped tabelle" id="tabella1">
                             <thead>
