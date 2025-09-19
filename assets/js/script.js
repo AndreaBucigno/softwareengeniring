@@ -11,30 +11,21 @@
         }, 5000);
     });
 
-
-    
-    $(document).ready(function () {
-    // Inizializza DataTables
-    $('.tabelle').DataTable(); 
-    
-    // Gestione automatica sparizione alert
-    $('.alert').each(function() {
-        const alert = $(this);
-        setTimeout(function() {
-            alert.fadeOut();
-        }, 5000);
+    $(".btn-rimuovi-file").on('click', function() {
+      var t=$(this);
+      var id=t.data('id');
+      $('#eliminaFileId').val(id);
     });
 
-    // Gestione click sul bottone elimina file
-    $('.btn-elimina-file').on('click', function() {
-        // Recupera i dati dal bottone cliccato
-        const fileId = $(this).data('file-id');
-        const fileName = $(this).data('file-nome');
-        
-        // Popola il modal con i dati
-        $('#eliminaFileId').val(fileId);
-        $('#nomeFileModal').text(fileName);
+/*document.addEventListener("DOMContentLoaded", function() {
+    const eliminaButtons = document.querySelectorAll(".elimina-file-btn");
+    const modalInput = document.getElementById("eliminaFileId"); // deve corrispondere all'id dell'input hidden nel modal
+    
+    eliminaButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            const fileId = this.getAttribute("data-id");
+            console.log("ID file da eliminare:", fileId); // debug console
+            modalInput.value = fileId;
+        });
     });
-});
-
-
+});./

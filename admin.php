@@ -13,7 +13,26 @@ if ($connessione->connect_error) {
     die("Connessione fallita: " . $connessione->connect_error);
 }
 
-
+//
+if (isset($_POST['elimina_file_id'])) { // die(var_dump($_POST));
+    $file_id = trim($_POST['elimina_file_id']);
+    
+    $sql = "UPDATE files SET disponibile = 'false' WHERE id = ?";
+    $stmt = $connessione->prepare($sql);
+    if (!$stmt) {
+        die("Errore prepare: " . $connessione->error);
+    }
+    $stmt->bind_param("i", $file_id);
+    
+    if ($stmt->execute()) {
+        $message = "File eliminato correttamente";
+        $messageType = "success";
+    } else {
+        $message = "Errore nell'eliminazione del file: " . $stmt->error;
+        $messageType = "danger";
+    }
+    $stmt->close();
+}
 
 $modal_tmp = file_get_contents('view/modal.View.html');
 $message = "";
@@ -235,7 +254,7 @@ foreach($result as $row) {
                     <button class='btn btn-warning btn-sm me-2'>
                         <i class='bi bi-pencil-square'></i> Modifica
                     </button>
-                    <button class='btn btn-danger btn-sm' data-id='" . $row['id'] . "' data-bs-toggle='modal' data-bs-target='#exampleModal'>
+                    <button class='btn btn-danger btn-sm btn-rimuovi-file' data-id='" . $row['id'] . "' data-bs-toggle='modal' data-bs-target='#exampleModal'>
                     <i class='bi bi-trash'></i> Elimina
                 </button>
                 </td>
@@ -428,6 +447,11 @@ $body .= '<!-- Bottone toggle per utente -->
                             <div class="mb-3">
                                 <label for="nome_file" class="form-label">Nome File</label>
                                 <input type="text" class="form-control" id="nome_file" name="nome_file" required> 
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Upload a file</label>
+                                <input class="form-control" type="file" id="formFile">
                             </div>
                             <div class="text-center">
                                 <button type="submit" class="btn btn-success btn-block">Aggiungi File</button>
