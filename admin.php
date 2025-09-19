@@ -13,6 +13,9 @@ if ($connessione->connect_error) {
     die("Connessione fallita: " . $connessione->connect_error);
 }
 
+
+
+$modal_tmp = file_get_contents('view/modal.View.html');
 $message = "";
 $messageType = "";
 
@@ -231,9 +234,9 @@ foreach($result as $row) {
                     <button class='btn btn-warning btn-sm me-2'>
                         <i class='bi bi-pencil-square'></i> Modifica
                     </button>
-                    <button class='btn btn-danger btn-sm'>
-                        <i class='bi bi-trash'></i> Elimina
-                    </button> 
+                    <button class='btn btn-danger btn-sm' data-id='" . $row['id'] . "' data-bs-toggle='modal' data-bs-target='#exampleModal'>
+                    <i class='bi bi-trash'></i> Elimina
+                    </button>
                 </td>
             </tr>";
 }
@@ -399,6 +402,11 @@ $body .= '<!-- Bottone toggle per utente -->
                         </form>
                     </div>
                 </div>
+                
+                <!-- Modal eliminaione -->
+
+                 '.$modal_tmp.'
+
 
                 <!-- Bottone toggle per file -->
                 <div class="text-center mb-3">
@@ -434,6 +442,8 @@ $body .= '<!-- Bottone toggle per utente -->
                         Collega una nuova mail.
                     </button>
                 </div>
+
+
 
                 <!-- Form file collassabile -->
                 <div class="collapse mb-4 form-collapse" id="formEmail">
