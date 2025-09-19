@@ -84,6 +84,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+
+//Costruzione form file
+
+if(isset($_POST["nome_file"])){
+    $id_utente = trim($_POST['id_utente']);
+    $nome_file = trim($_POST['nome_file']);
+    $data_ora_corrente =time();
+    $data_ora_corrente.="_".$nome_file;
+    
+    $sql = "INSERT INTO files(id_utente,nome_file,data_upload,disponibile) VALUES (?,?,CURDATE(),true)";
+    $stmt = $connessione->prepare($sql);
+    $stmt->bind_param("is",$id_utente,$data_ora_corrente);
+    if ($stmt->execute()) {
+            $message = "Dominio registrato correttamente";
+            $messageType = "success";
+        } else {
+            $message = "Errore nella registrazione del dominio";
+            $messageType = "danger";
+        }
+        $stmt->close();
+    }
+
 // Costruzione SELECT ID Utente
 $SELECT_ID = "<select class='form-select' name='id_utente' id='id_utente' required>
                 <option value='' disabled selected>Seleziona ID Utente</option>";
@@ -94,6 +116,47 @@ foreach ($result as $row) {
 }
 
 $SELECT_ID .= "</select>";
+
+//costruzione form PER EMaiL
+
+if(isset($_POST['email_form_email']))
+{
+    $nome_email = trim($_POST['email_form_email']);
+    $id_utente = trim($_POST['id_utente']);
+    $id_dominio = trim($_POST['id_dominio']);
+
+    $checkSql = "SELECT nome_email FROM email WHERE nome_email = '$nome_email'";
+    $check_stmt = $connessione->query($checkSql);
+    if($check_stmt->num_rows>0){
+            $message="Email già registrata";
+            $messageType="danger";
+        }else{
+
+        $sql = "INSERT INTO email (id_utente, nome_email, id_dominio) VALUES (?, ?, ?)";
+        $stmt = $connessione->prepare($sql);
+        $stmt->bind_param("isi", $id_utente, $nome_email, $id_dominio);  
+        
+        if ($stmt->execute()) {
+            $message = "Email registrato correttamente";
+            $messageType = "success";
+        } else {
+            $message = "Errore nella registrazione dell'email";
+            $messageType = "danger";
+        }
+        $stmt->close();
+    }
+}
+
+// Costruzione SELECT ID Utente
+$SELECT_ID_DOMINIO = "<select class='form-select' name='id_dominio' id='id_dominio' required>
+                <option value='' disabled selected>Seleziona ID Utente</option>";
+$sql = "SELECT id, nome_dominio FROM domini ";
+$result = $connessione->query($sql);
+foreach ($result as $row) {
+    $SELECT_ID_DOMINIO .= "<option value='" . $row['id'] . "'>" . $row['id'] . " - " . $row['nome_dominio'] . "</option>";
+}
+
+$SELECT_ID_DOMINIO .= "</select>";
 
 // Costruzione utenti registrati
 $TABELLE_UTENTI = "";
@@ -357,14 +420,44 @@ $body .= '<!-- Bottone toggle per utente -->
                                 <label for="nome_file" class="form-label">Nome File</label>
                                 <input type="text" class="form-control" id="nome_file" name="nome_file" required> 
                             </div>
-
-                            <div class="mb-3">
-                                <label for="data_upload" class="form-label">Data Upload</label>
-                                <input type="date" class="form-control" id="data_upload" name="data_upload" required>
-                            </div>
                             <div class="text-center">
                                 <button type="submit" class="btn btn-success btn-block">Aggiungi File</button>
                             </div>
+                        </form>
+                    </div>
+                </div>
+
+            <!-- Bottone toggle per file -->
+                <div class="text-center mb-3">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#formEmail" aria-expanded="false" aria-controls="formEmail" id="toggleFormButton4">
+                        <i class="bi bi-envelope"></i>
+                        Collega una nuova mail.
+                    </button>
+                </div>
+
+                <!-- Form file collassabile -->
+                <div class="collapse mb-4 form-collapse" id="formEmail">
+                    <div class="card-body">
+                        <form class="needs-validation" novalidate method="POST" action="admin.php" id="adminForm4">
+                        <div class="mb-3">    
+                        <label for="id_utente_email" class="form-label">ID Utente</label>
+                                ' . $SELECT_ID . '
+                            </div>
+                            
+                            <div class="mb-3">
+                            <label for="id_dominio_email" class="form-label">ID Dominio</label>
+                                ' . $SELECT_ID_DOMINIO . '
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="exampleInputEmail1" name="email_form_email" required>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success btn-block">Aggiungi File</button>
+                            </div>
+
                         </form>
                     </div>
                 </div>

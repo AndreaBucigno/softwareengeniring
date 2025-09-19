@@ -36,8 +36,9 @@ $TABELLA_FILES = "";
 
 for ($i = 0; $i < $result->num_rows; $i++) {
     $row = $result->fetch_array(MYSQLI_ASSOC);
+
     $TABELLA_FILES .= "<tr>
-                <td>" . $row['nome_file'] . "</td>
+                <td>" . substr($row['nome_file'],11). "</td>
                 <td>
                     <button class='btn btn-primary btn-sm'>
                         <i class='bi bi-download'></i> Download
