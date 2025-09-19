@@ -39,7 +39,7 @@ if (isset($_POST['elimina_file_id'])) {
 // MODIFICA FILE - Sposta questo codice all'inizio, prima di qualsiasi output
 if (isset($_POST['modifica_file_id'])) {
     $file_id     = intval($_POST['modifica_file_id']);
-    $id_utente   = intval($_POST['modifica_id_utente']); // Aggiungi questa riga
+    $id_utente   = intval($_POST['modifica_id_utente']);
     $nome_file   = trim($_POST['nome_file']);
     $disponibile = $_POST['disponibile'] ?? 'false';
 
