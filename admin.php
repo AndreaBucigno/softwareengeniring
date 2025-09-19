@@ -230,13 +230,14 @@ foreach($result as $row) {
                 <td>" . $row['id_utente'] . "</td>
                 <td>" . $row['nome_file'] . "</td>
                 <td>" . $row['data_upload'] . "</td>
+                <td>" .$row['disponibile'] . "</td>
                 <td>
                     <button class='btn btn-warning btn-sm me-2'>
                         <i class='bi bi-pencil-square'></i> Modifica
                     </button>
                     <button class='btn btn-danger btn-sm' data-id='" . $row['id'] . "' data-bs-toggle='modal' data-bs-target='#exampleModal'>
                     <i class='bi bi-trash'></i> Elimina
-                    </button>
+                </button>
                 </td>
             </tr>";
 }
@@ -547,6 +548,7 @@ $body .= '<!-- Bottone toggle per utente -->
                                     <th>ID_UTENTE</th>
                                     <th>NOME FILE</th>
                                     <th>DATA UPLOAD</th>
+                                    <th>DISPONIBILE</th>
                                     <th>AZIONI</th>
                                 </tr>
                             </thead>
