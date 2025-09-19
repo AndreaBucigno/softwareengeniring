@@ -11,21 +11,20 @@
         }, 5000);
     });
 
-    $(".btn-rimuovi-file").on('click', function() {
-      var t=$(this);
-      var id=t.data('id');
-      $('#eliminaFileId').val(id);
-    });
+   $(document).ready(function() {
+    $(".btn-modifica-file").on('click', function() {
+        var t = $(this);
+        var id = t.data('id');
+        $("#modificaFileId").val(id);
+        var row = t.closest('tr');
+        var nomeFile = row.find('td').eq(2).text().trim();
+        var disponibile = row.find('td').eq(4).text().trim();
+        var idUtente = row.find('td').eq(1).text().trim(); // Aggiungi questa riga
 
-/*document.addEventListener("DOMContentLoaded", function() {
-    const eliminaButtons = document.querySelectorAll(".elimina-file-btn");
-    const modalInput = document.getElementById("eliminaFileId"); // deve corrispondere all'id dell'input hidden nel modal
-    
-    eliminaButtons.forEach(button => {
-        button.addEventListener("click", function() {
-            const fileId = this.getAttribute("data-id");
-            console.log("ID file da eliminare:", fileId); // debug console
-            modalInput.value = fileId;
-        });
+        // Imposta i valori nel form del modal
+        $("#editFileNome").val(nomeFile);
+        $("#editFileDisponibile").val(disponibile);
+        $("#modificaIdUtente").val(idUtente); // Aggiungi questa riga
     });
-});*/
+});
+

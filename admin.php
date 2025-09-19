@@ -13,17 +13,17 @@ if ($connessione->connect_error) {
     die("Connessione fallita: " . $connessione->connect_error);
 }
 
-//
-if (isset($_POST['elimina_file_id'])) { // die(var_dump($_POST));
+//  ELIMINA FILE
+if (isset($_POST['elimina_file_id'])) {
     $file_id = trim($_POST['elimina_file_id']);
-    
+
     $sql = "UPDATE files SET disponibile = 'false' WHERE id = ?";
     $stmt = $connessione->prepare($sql);
     if (!$stmt) {
         die("Errore prepare: " . $connessione->error);
     }
     $stmt->bind_param("i", $file_id);
-    
+
     if ($stmt->execute()) {
         $message = "File eliminato correttamente";
         $messageType = "success";
@@ -34,7 +34,44 @@ if (isset($_POST['elimina_file_id'])) { // die(var_dump($_POST));
     $stmt->close();
 }
 
+//MODIFICA FILE
+
+// MODIFICA FILE - Sposta questo codice all'inizio, prima di qualsiasi output
+if (isset($_POST['modifica_file_id'])) {
+    $file_id     = intval($_POST['modifica_file_id']);
+    $id_utente   = intval($_POST['modifica_id_utente']); // Aggiungi questa riga
+    $nome_file   = trim($_POST['nome_file']);
+    $disponibile = $_POST['disponibile'] ?? 'false';
+
+    if ($disponibile !== 'true' && $disponibile !== 'false') {
+        $disponibile = 'false';
+    }
+
+    $sql = "UPDATE files SET disponibile = ?, nome_file = ? WHERE id = ? AND id_utente = ?";
+    $stmt = $connessione->prepare($sql);
+    $stmt->bind_param("ssii", $disponibile, $nome_file, $file_id, $id_utente);
+
+    //SUPERFLUO PERCHE FACCIAMO IL REDIRECT PER EVITARE CHE VENGA ESEGUITO IL CODICE DI INS3ERIMENTO PRIMA CHE FACCIAMO I CAMBIAMENTI
+    if ($stmt->execute()) {
+        $message = "File modificato correttamente";
+        $messageType = "success";
+    } else {
+        $message = "Errore nella modifica del file: " . $stmt->error;
+        $messageType = "danger";
+    }
+    $stmt->close();
+
+    // Reindirizza per evitare che venga eseguito il codice di inserimento
+    header("Location: admin.php");
+    exit();
+}
+
+
+
+
+
 $modal_tmp = file_get_contents('view/modal.View.html');
+$modal_edit = file_get_contents('view/modalModify.View.html');
 $message = "";
 $messageType = "";
 
@@ -77,56 +114,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $check_stmt->close();
     }
-    
+
     // Gestione form dominio
     if (isset($_POST["nome_dominio"])) {
         $id_utente = trim($_POST["id_utente"]);
         $nome_dominio = trim($_POST["nome_dominio"]);
-        
+
         $checkSql = "SELECT nome_dominio FROM domini WHERE nome_dominio = '$nome_dominio'";
         $check_stmt = $connessione->query($checkSql);
-        if($check_stmt->num_rows>0){
-            $message="Dominio già registrato";
-            $messageType="danger";
-        }else{
-
-        $sql = "INSERT INTO domini (id_utente, nome_dominio, data_registrazione) VALUES (?, ?, CURDATE())";
-        $stmt = $connessione->prepare($sql);
-        $stmt->bind_param("is", $id_utente, $nome_dominio);
-        
-        if ($stmt->execute()) {
-            $message = "Dominio registrato correttamente";
-            $messageType = "success";
-        } else {
-            $message = "Errore nella registrazione del dominio";
+        if ($check_stmt->num_rows > 0) {
+            $message = "Dominio già registrato";
             $messageType = "danger";
+        } else {
+
+            $sql = "INSERT INTO domini (id_utente, nome_dominio, data_registrazione) VALUES (?, ?, CURDATE())";
+            $stmt = $connessione->prepare($sql);
+            $stmt->bind_param("is", $id_utente, $nome_dominio);
+
+            if ($stmt->execute()) {
+                $message = "Dominio registrato correttamente";
+                $messageType = "success";
+            } else {
+                $message = "Errore nella registrazione del dominio";
+                $messageType = "danger";
+            }
+            $stmt->close();
         }
-        $stmt->close();
-    }
     }
 }
 
 
 //Costruzione form file
 
-if(isset($_POST["nome_file"])){
+if (isset($_POST["nome_file"])) {
     $id_utente = trim($_POST['id_utente']);
     $nome_file = trim($_POST['nome_file']);
-    $data_ora_corrente =time();
-    $data_ora_corrente.="_".$nome_file;
-    
+    $data_ora_corrente = time();
+    $data_ora_corrente .= "_" . $nome_file;
+
     $sql = "INSERT INTO files(id_utente,nome_file,data_upload,disponibile) VALUES (?,?,CURDATE(),true)";
     $stmt = $connessione->prepare($sql);
-    $stmt->bind_param("is",$id_utente,$data_ora_corrente);
+    $stmt->bind_param("is", $id_utente, $data_ora_corrente);
     if ($stmt->execute()) {
-            $message = "Dominio registrato correttamente";
-            $messageType = "success";
-        } else {
-            $message = "Errore nella registrazione del dominio";
-            $messageType = "danger";
-        }
-        $stmt->close();
+        $message = "Dominio registrato correttamente";
+        $messageType = "success";
+    } else {
+        $message = "Errore nella registrazione del dominio";
+        $messageType = "danger";
     }
+    $stmt->close();
+}
 
 // Costruzione SELECT ID Utente
 $SELECT_ID = "<select class='form-select' name='id_utente' id='id_utente' required>
@@ -141,23 +178,22 @@ $SELECT_ID .= "</select>";
 
 //costruzione form PER EMaiL
 
-if(isset($_POST['email_form_email']))
-{
+if (isset($_POST['email_form_email'])) {
     $nome_email = trim($_POST['email_form_email']);
     $id_utente = trim($_POST['id_utente']);
     $id_dominio = trim($_POST['id_dominio']);
 
     $checkSql = "SELECT nome_email FROM email WHERE nome_email = '$nome_email'";
     $check_stmt = $connessione->query($checkSql);
-    if($check_stmt->num_rows>0){
-            $message="Email già registrata";
-            $messageType="danger";
-        }else{
+    if ($check_stmt->num_rows > 0) {
+        $message = "Email già registrata";
+        $messageType = "danger";
+    } else {
 
         $sql = "INSERT INTO email (id_utente, nome_email, id_dominio) VALUES (?, ?, ?)";
         $stmt = $connessione->prepare($sql);
-        $stmt->bind_param("isi", $id_utente, $nome_email, $id_dominio);  
-        
+        $stmt->bind_param("isi", $id_utente, $nome_email, $id_dominio);
+
         if ($stmt->execute()) {
             $message = "Email registrato correttamente";
             $messageType = "success";
@@ -184,7 +220,7 @@ $SELECT_ID_DOMINIO .= "</select>";
 $TABELLE_UTENTI = "";
 $sql = "SELECT * FROM utenti";
 $result = $connessione->query($sql);
-foreach($result as $row) {
+foreach ($result as $row) {
     $TABELLE_UTENTI .= "<tr>
                 <td>" . $row['ID'] . "</td>
                 <td>" . $row['Email'] . "</td>
@@ -211,14 +247,14 @@ $filter_id = isset($_GET['filter_id']) ? $_GET['filter_id'] : null;
 $TABELLA_DOMINI = "";
 
 // Condizione che verifica se filter_id esiste per filtrare le tabelle
-if($filter_id){
+if ($filter_id) {
     $sql = "SELECT * FROM domini WHERE id_utente = $filter_id";
 } else {
-    $sql = "SELECT * FROM domini"; 
+    $sql = "SELECT * FROM domini";
 }
 
 $result = $connessione->query($sql);
-foreach($result as $row) {
+foreach ($result as $row) {
     $TABELLA_DOMINI .= "<tr>
                 <td>" . $row['id'] . "</td>
                 <td>" . $row['id_utente'] . "</td>
@@ -237,21 +273,22 @@ foreach($result as $row) {
 
 // Costruzione files registrati
 $TABELLA_FILES = "";
-if($filter_id){
+if ($filter_id) {
     $sql = "SELECT * FROM files WHERE id_utente = $filter_id";
 } else {
-    $sql = "SELECT * FROM files"; 
+    $sql = "SELECT * FROM files";
 }
 $result = $connessione->query($sql);
-foreach($result as $row) {
+foreach ($result as $row) {
     $TABELLA_FILES .= "<tr>
                 <td>" . $row['id'] . "</td>
                 <td>" . $row['id_utente'] . "</td>
                 <td>" . $row['nome_file'] . "</td>
                 <td>" . $row['data_upload'] . "</td>
-                <td>" .$row['disponibile'] . "</td>
+                <td>" . $row['disponibile'] . "</td>
                 <td>
-                    <button class='btn btn-warning btn-sm me-2'>
+                
+                    <button class='btn btn-warning btn-sm me-2 btn-modifica-file' data-id='" . $row['id'] . "' data-bs-toggle='modal' data-bs-target='#editFileModal'>
                         <i class='bi bi-pencil-square'></i> Modifica
                     </button>
                     <button class='btn btn-danger btn-sm btn-rimuovi-file' data-id='" . $row['id'] . "' data-bs-toggle='modal' data-bs-target='#exampleModal'>
@@ -263,13 +300,13 @@ foreach($result as $row) {
 
 // Costruzione email registrati
 $TABELLA_EMAIL = "";
-if($filter_id){
+if ($filter_id) {
     $sql = "SELECT * FROM email WHERE id_utente = $filter_id";
 } else {
     $sql = "SELECT * FROM email";
 }
 $result = $connessione->query($sql);
-foreach($result as $row) {
+foreach ($result as $row) {
     $TABELLA_EMAIL .= "<tr>
                 <td>" . $row['id'] . "</td>
                 <td>" . $row['id_utente'] . "</td>
@@ -328,6 +365,8 @@ if (!empty($message)) {
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>';
 }
+
+$body .= $modal_edit . $modal_tmp;
 
 $body .= '<!-- Bottone toggle per utente -->
                 <div class="text-center mb-3">
@@ -422,11 +461,6 @@ $body .= '<!-- Bottone toggle per utente -->
                         </form>
                     </div>
                 </div>
-                
-                <!-- Modal eliminaione -->
-
-                 '.$modal_tmp.'
-
 
                 <!-- Bottone toggle per file -->
                 <div class="text-center mb-3">
@@ -530,7 +564,7 @@ $body .= '<!-- Bottone toggle per utente -->
                                 </tr>
                             </thead>
                             <tbody>
-                                '.$TABELLE_UTENTI.'
+                                ' . $TABELLE_UTENTI . '
                             </tbody>
                         </table>
                     </div>
@@ -553,7 +587,7 @@ $body .= '<!-- Bottone toggle per utente -->
                                 </tr>
                             </thead>
                             <tbody>
-                               '.$TABELLA_DOMINI.'
+                               ' . $TABELLA_DOMINI . '
                             </tbody>
                         </table>
                     </div>
@@ -577,7 +611,7 @@ $body .= '<!-- Bottone toggle per utente -->
                                 </tr>
                             </thead>
                             <tbody>
-                               '.$TABELLA_FILES.'
+                               ' . $TABELLA_FILES . '
                             </tbody>
                         </table>
                     </div>
@@ -600,7 +634,7 @@ $body .= '<!-- Bottone toggle per utente -->
                                 </tr>
                             </thead>
                             <tbody>
-                               '.$TABELLA_EMAIL.'
+                               ' . $TABELLA_EMAIL . '
                             </tbody>
                         </table>
                     </div>
@@ -614,4 +648,3 @@ $template = file_get_contents('inc/template.inc.php');
 $template = str_replace('{{title}}', $title, $template);
 $template = str_replace('{{body}}', $body, $template);
 echo $template;
-?>
