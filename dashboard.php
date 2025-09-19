@@ -1,12 +1,10 @@
 <?php
-
 session_start();
 
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["ruolo"] !== "user") {
     header("Location: login.php");
     exit();
 }
-
 
 $connessione = new mysqli("localhost", "root", "", "progettopcto_bucignoconsalvi");
 if ($connessione->connect_error) {
@@ -63,66 +61,75 @@ for ($i = 0; $i < $result->num_rows; $i++) {
 
 $connessione->close();
 
-$title = "User Page";
+$title = "Dashboard Utente";
 
 $body = '
-<div class="container">
-<div class="admin-container-large">  
-    <div class="text-center mb-4">
-        <h4><i class="bi bi-globe2"></i> I tuoi domini</h4>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="admin-container-large">
+                <h4 class="page-title mb-4"><i class="bi bi-person-circle"></i> La tua Dashboard</h4>
+                
+                <!-- Tabella Domini -->
+                <div class="mb-4">
+                    <h5 class="mb-3"><i class="bi bi-globe2"></i> I tuoi domini</h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped tabelle">
+                            <thead>
+                                <tr>
+                                    <th>DOMINIO</th>
+                                    <th>DATA REGISTRAZIONE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                '.$TABELLA_DOMINI.'
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+                
+                <!-- Tabella Files -->
+                <div class="mb-4">
+                    <h5 class="mb-3"><i class="bi bi-archive"></i> I tuoi file</h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped tabelle">
+                            <thead>
+                                <tr>
+                                    <th>NOME FILE</th>
+                                    <th>AZIONI</th>
+                                    <th>DATA UPLOAD</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                '.$TABELLA_FILES.'
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+                
+                <!-- Tabella Email -->
+                <div class="mb-4">
+                    <h5 class="mb-3"><i class="bi bi-envelope-fill"></i> Le tue email</h5>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped tabelle">
+                            <thead>
+                                <tr>
+                                    <th>EMAIL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                '.$TABELLA_EMAIL.'
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-    <div class="container-T1">
-
-        <table class="tabelle" id="miaTabella">
-            <thead>
-                <tr>
-                    <th>DOMINIO</th>
-                    <th>DATA REGISTRAZIONE</th>
-                </tr>
-            </thead>
-            <tbody>
-                '.$TABELLA_DOMINI.'
-            </tbody>
-        </table>
-    </div>
-    <hr>
-    <div class="container-T2">
-    <div class="text-center mb-4">
-    
-        <h4><i class="bi bi-archive"></i> I tuoi file </h4>
-        </div>
-        <table class="tabelle" id="miaTabella2">
-            <thead>
-                <tr>
-                    <th>Nome file</th>
-                    <th>Azioni</th>
-                    <th>Data upload</th>
-                </tr>
-            </thead>
-            <tbody>
-                '.$TABELLA_FILES.'
-            </tbody>
-        </table>
-    </div>
-<hr>
-    <div class="container-T3">
-    <div class="text-center mb-4">
-        <h4><i class="bi bi-envelope-fill"></i> Le tue email </h4>
-        </div>
-        <table class="tabelle" id="miaTabella3">
-            <thead>
-                <tr>
-                    <th>Email</th>
-                </tr>
-            </thead>
-            <tbody>
-                '.$TABELLA_EMAIL.'
-            </tbody>
-        </table>
     </div>
 </div>
 ';
-
 
 $template = file_get_contents('inc/template.inc.php');
 $template = str_replace('{{title}}', $title, $template);

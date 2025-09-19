@@ -7,6 +7,12 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION
     exit();
 }
 
+// Stabilire la connessione al database all'inizio
+$connessione = new mysqli("localhost", "root", "", "progettopcto_bucignoconsalvi");
+if ($connessione->connect_error) {
+    die("Connessione fallita: " . $connessione->connect_error);
+}
+
 $message = "";
 $messageType = "";
 
@@ -21,11 +27,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $dataRegistrazione = trim($_POST["dataRegistrazione"]);
         $Attivo = trim($_POST["Attivo"]);
         $password = trim($_POST["password"]);
-
-        $connessione = new mysqli("localhost", "root", "", "progettopcto_bucignoconsalvi");
-        if ($connessione->connect_error) {
-            die("Connessione fallita: " . $connessione->connect_error);
-        }
 
         // Controllo se l'email esiste già
         $check_sql = "SELECT Email FROM utenti WHERE Email = ?";
@@ -53,7 +54,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->close();
         }
         $check_stmt->close();
-        $connessione->close();
     }
     
     // Gestione form dominio
@@ -61,11 +61,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id_utente = trim($_POST["id_utente"]);
         $nome_dominio = trim($_POST["nome_dominio"]);
         
-        $connessione = new mysqli("localhost", "root", "", "progettopcto_bucignoconsalvi");
-        if ($connessione->connect_error) {
-            die("Connessione fallita: " . $connessione->connect_error);
-        }
-        
+        $checkSql = "SELECT nome_dominio FROM domini WHERE nome_dominio = '$nome_dominio'";
+        $check_stmt = $connessione->query($checkSql);
+        if($check_stmt->num_rows>0){
+            $message="Dominio già registrato";
+            $messageType="danger";
+        }else{
+
         $sql = "INSERT INTO domini (id_utente, nome_dominio, data_registrazione) VALUES (?, ?, CURDATE())";
         $stmt = $connessione->prepare($sql);
         $stmt->bind_param("is", $id_utente, $nome_dominio);
@@ -78,13 +80,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $messageType = "danger";
         }
         $stmt->close();
-        $connessione->close();
     }
-}
-
-$connessione = new mysqli("localhost", "root", "", "progettopcto_bucignoconsalvi");
-if ($connessione->connect_error) {
-    die("Connessione fallita: " . $connessione->connect_error);
+    }
 }
 
 // Costruzione SELECT ID Utente
@@ -95,6 +92,7 @@ $result = $connessione->query($sql);
 foreach ($result as $row) {
     $SELECT_ID .= "<option value='" . $row['ID'] . "'>" . $row['ID'] . " - " . $row['Email'] . "</option>";
 }
+
 $SELECT_ID .= "</select>";
 
 // Costruzione utenti registrati
@@ -219,6 +217,32 @@ if (!empty($message)) {
         </div>';
 }
 
+$body = '<div class="container-fluid">
+    <div class="row">
+        <!-- Colonna sinistra - Form creazione utente, dominio e file -->
+        <div class="col-lg-4">
+            <div class="admin-container">';
+
+if (!empty($message)) {
+    $body .= '<div class="alert alert-' . $messageType . ' alert-dismissible fade show" role="alert">
+            ' . $message . '
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>';
+}
+
+$body = '<div class="container-fluid">
+    <div class="row">
+        <!-- Colonna sinistra - Form creazione utente, dominio e file -->
+        <div class="col-lg-4">
+            <div class="admin-container">';
+
+if (!empty($message)) {
+    $body .= '<div class="alert alert-' . $messageType . ' alert-dismissible fade show" role="alert">
+            ' . $message . '
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>';
+}
+
 $body .= '<!-- Bottone toggle per utente -->
                 <div class="text-center mb-3">
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#formUtente" aria-expanded="false" aria-controls="formUtente" id="toggleFormButton">
@@ -228,8 +252,8 @@ $body .= '<!-- Bottone toggle per utente -->
                 </div>
 
                 <!-- Form utente collassabile -->
-                <div class="collapse mb-4" id="formUtente">
-                    <div class="card card-body shadow-sm">
+                <div class="collapse mb-4 form-collapse" id="formUtente">
+                    <div class="card-body">
                         <form class="needs-validation" novalidate method="POST" action="admin.php" id="adminForm">
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -295,8 +319,8 @@ $body .= '<!-- Bottone toggle per utente -->
                 </div>
 
                 <!-- Form dominio collassabile -->
-                <div class="collapse mb-4" id="formDominio">
-                    <div class="card card-body shadow-sm">
+                <div class="collapse mb-4 form-collapse" id="formDominio">
+                    <div class="card-body">
                         <form class="needs-validation" novalidate method="POST" action="admin.php" id="adminForm2">
                             <div class="mb-3">
                                 <label for="id_utente" class="form-label">ID Utente</label>
@@ -308,6 +332,38 @@ $body .= '<!-- Bottone toggle per utente -->
                             </div>
                             <div class="text-center">
                                 <button type="submit" class="btn btn-success btn-block">Crea Dominio</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Bottone toggle per file -->
+                <div class="text-center mb-3">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#formFile" aria-expanded="false" aria-controls="formFile" id="toggleFormButton3">
+                        <i class="bi bi-file-earmark-plus"></i>
+                        Aggiungi un nuovo file
+                    </button>
+                </div>
+
+                <!-- Form file collassabile -->
+                <div class="collapse mb-4 form-collapse" id="formFile">
+                    <div class="card-body">
+                        <form class="needs-validation" novalidate method="POST" action="admin.php" id="adminForm3">
+                            <div class="mb-3">
+                                <label for="id_utente_file" class="form-label">ID Utente</label>
+                                ' . $SELECT_ID . '
+                            </div>
+                            <div class="mb-3">
+                                <label for="nome_file" class="form-label">Nome File</label>
+                                <input type="text" class="form-control" id="nome_file" name="nome_file" required> 
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="data_upload" class="form-label">Data Upload</label>
+                                <input type="date" class="form-control" id="data_upload" name="data_upload" required>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success btn-block">Aggiungi File</button>
                             </div>
                         </form>
                     </div>
