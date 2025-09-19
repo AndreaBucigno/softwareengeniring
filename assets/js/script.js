@@ -28,4 +28,4 @@
             modalInput.value = fileId;
         });
     });
-});./
+});*/
