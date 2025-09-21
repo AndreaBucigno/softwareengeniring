@@ -1,22 +1,34 @@
 <?php
 session_start();
+require_once 'config/database.php';
 
-$message = ""; 
-$messageType = ""; 
+$message = "";
+$messageType = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST["email"]);
-    $utenti = json_decode(file_get_contents("data/utenti.json"), true);
 
-    if (isset($utenti[$email])) {
+    // Ottengo la connessione al database
+    $connessione = getDBConnection();
+
+    // Controllo se l'email esiste nel database
+    $sql = "SELECT Email FROM utenti WHERE Email = ? AND attivo = 'true'";
+    $stmt = $connessione->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
         $message = "Ti abbiamo inviato le istruzioni per recuperare la password.";
         $messageType = "success";
     } else {
-        $message = "L'email non è registrata.Verifica se l'hai inserita correttamente nel caso contrario chiedi ad un amministratore di registrarti.";
+        $message = "L'email non è registrata o l'account non è attivo. Verifica se l'hai inserita correttamente, nel caso contrario chiedi ad un amministratore di registrarti.";
         $messageType = "danger";
     }
-}
 
+    $stmt->close();
+    $connessione->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -43,8 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-
-    </nav>
     <div class="container login-container mt-3">
         <div class="text-center mb-4">
             <img src="assets/images/logo_softwarengineering_blubordobianco.png" alt="Logo" class="Logo">

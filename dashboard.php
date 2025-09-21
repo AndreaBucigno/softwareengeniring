@@ -1,15 +1,14 @@
 <?php
 session_start();
+require_once 'config/database.php';
 
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["ruolo"] !== "user") {
     header("Location: login.php");
     exit();
 }
 
-$connessione = new mysqli("localhost", "root", "", "progettopcto_bucignoconsalvi");
-if ($connessione->connect_error) {
-    die("Connessione fallita: " . $connessione->connect_error);
-}
+// OTTENGO LA CONNESSIONE AL DATABASE
+$connessione = getDBConnection();
 
 //COSTRUZIONE TABELLA DOMINI
 $user_id = $_SESSION['id_utente'];
@@ -27,8 +26,6 @@ for ($i = 0; $i < $result->num_rows; $i++) {
 }
 
 //COSTRUZIONE TABELLA FILES
-
-$user_id = $_SESSION['id_utente'];
 $sql = "SELECT * FROM files WHERE id_utente = '$user_id'";
 
 $result = $connessione->query($sql);
@@ -38,7 +35,7 @@ for ($i = 0; $i < $result->num_rows; $i++) {
     $row = $result->fetch_array(MYSQLI_ASSOC);
 
     $TABELLA_FILES .= "<tr>
-                <td>" . substr($row['nome_file'],11). "</td>
+                <td>" . substr($row['nome_file'], 11) . "</td>
                 <td>
                     <button class='btn btn-primary btn-sm'>
                         <i class='bi bi-download'></i> Download
@@ -83,7 +80,7 @@ $body = '
                                 </tr>
                             </thead>
                             <tbody>
-                                '.$TABELLA_DOMINI.'
+                                ' . $TABELLA_DOMINI . '
                             </tbody>
                         </table>
                     </div>
@@ -103,7 +100,7 @@ $body = '
                                 </tr>
                             </thead>
                             <tbody>
-                                '.$TABELLA_FILES.'
+                                ' . $TABELLA_FILES . '
                             </tbody>
                         </table>
                     </div>
@@ -121,7 +118,7 @@ $body = '
                                 </tr>
                             </thead>
                             <tbody>
-                                '.$TABELLA_EMAIL.'
+                                ' . $TABELLA_EMAIL . '
                             </tbody>
                         </table>
                     </div>
@@ -134,6 +131,5 @@ $body = '
 
 $template = file_get_contents('inc/template.inc.php');
 $template = str_replace('{{title}}', $title, $template);
-$template = str_replace('{{body}}', $body, $template);  
+$template = str_replace('{{body}}', $body, $template);
 echo $template;
-?>
