@@ -55,14 +55,26 @@ Il progetto consiste in un portale web dinamico che permette la gestione di uten
 /
 ├── assets/
 │   ├── css/
-│   │   └── styles.css          # Stili personalizzati
+│   │   └── styles.css          # Stili personalizzati per il tema scuro
 │   ├── js/
-│   │   └── script.js           # JavaScript personalizzato
-│   └── images/                 # Risorse grafiche
+│   │   └── script.js           # JavaScript per DataTables e interazioni
+│   └── images/                 # Risorse grafiche (logo, icone)
+├── builders/
+│   ├── html_builder.php        # Costruttore del corpo HTML principale
+│   ├── select_builders.php     # Costruttori per elementi select
+│   └── table_builders.php      # Costruttori per le tabelle dinamiche
+├── config/
+│   └── database.php            # Configurazione database MySQL
 ├── data/
-│   └── utenti.json            # Dati utenti (demo)
+│   └── utenti.json            # Dati utenti di demo (formato JSON)
+├── Handler/
+│   ├── file_operations.php     # Operazioni CRUD sui file
+│   └── form_handlers.php       # Gestione form (utenti, domini, file, email)
 ├── inc/
-│   └── template.inc.php       # Template base riutilizzabile
+│   └── template.inc.php       # Template HTML base riutilizzabile
+├── view/
+│   ├── modal.View.html        # Modal per eliminazione file
+│   └── modalModify.View.html  # Modal per modifica file
 ├── index.php                  # Homepage aziendale
 ├── login.php                  # Pagina di accesso
 ├── logout.php                 # Script logout
