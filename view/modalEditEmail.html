@@ -1,80 +1,60 @@
-<div class="modal fade" id="editEmailModal" tabindex="-1" aria-labelledby="editFileModalLabel" aria-hidden="true">
+<div class="modal fade" id="editEmailModal" tabindex="-1" aria-labelledby="editEmailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content bg-dark border-warning">
             <div class="modal-header bg-warning text-dark border-0">
-                <h5 class="modal-title fw-bold" id="editFileModalLabel">
+                <h5 class="modal-title fw-bold" id="editEmailModalLabel">
                     <i class="bi bi-pencil-square me-2"></i>
-                    Modifica File
+                    Modifica Email
                 </h5>
                 <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4">
                 <form method="POST" action="admin.php" id="editEmailForm" class="needs-validation" novalidate>
-                    <input type="hidden" name="modifica_file_id" id="modificaFileId" value="">
-                    <input type="hidden" name="modifica_id_utente" id="modificaIdUtente" value="">
+                    <input type="hidden" name="modifica_email_id" id="modificaEmailId" value="">
+                    <input type="hidden" name="modifica_email_id_utente" id="modificaEmailIdUtente" value="">
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="editFileDisponibile" class="form-label text-white fw-semibold">
-                                <i class="bi bi-toggle-on me-1 text-success"></i>
-                                Stato Disponibilità
+                            <label for="editEmailIdDominio" class="form-label text-white fw-semibold">
+                                <i class="bi bi-globe me-1 text-success"></i>
+                                ID Dominio
                             </label>
-                            <select class="form-select form-select-lg shadow-sm" name="disponibile" id="editFileDisponibile" required>
-                                <option value="true" class="text-success">
-                                    <i class="bi bi-check-circle"></i> Disponibile
-                                </option>
-                                <option value="false" class="text-danger">
-                                    <i class="bi bi-x-circle"></i> Non Disponibile
-                                </option>
+                            <select class="form-select form-select-lg shadow-sm" name="modifica_email_id_dominio" id="editEmailIdDominio" required>
+                                <!-- Le opzioni saranno populate dinamicamente -->
                             </select>
                             <div class="invalid-feedback">
-                                Seleziona lo stato di disponibilità.
+                                Seleziona un dominio.
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="editFileDisponibile" class="form-label text-white fw-semibold">
-                                <i class="bi bi-globe"></i>
-                                Seleziona ID DOMINIO 
-                            </label>
-                            <select class="form-select form-select-lg shadow-sm" name="disponibile" id="editFileDisponibile" required>
-                                <option value="true" class="text-success">
-                                    <i class="bi bi-check-circle"></i> 
-                                </option>
-                                <option value="false" class="text-danger">
-                                    <i class="bi bi-x-circle"></i> 
-                                </option>
-                            </select>
                         </div>
                     </div>
                     
                     <div class="mb-4">
-                        <label for="editFileNome" class="form-label text-white fw-semibold">
-                            <i class="bi bi-file-earmark-text me-1 text-info"></i>
+                        <label for="editEmailNome" class="form-label text-white fw-semibold">
+                            <i class="bi bi-envelope me-1 text-info"></i>
                             Nome Email
                         </label>
                         <div class="input-group input-group-lg shadow-sm">
                             <span class="input-group-text bg-secondary text-white border-0">
-                                <i class="bi bi-file-earmark"></i>
+                                <i class="bi bi-envelope"></i>
                             </span>
-                            <input type="text" class="form-control" id="editFileNome" name="nome_file" required 
-                                   placeholder="Inserisci il nome del file">
+                            <input type="email" class="form-control" id="editEmailNome" name="nome_email" required 
+                                   placeholder="Inserisci l'indirizzo email">
+                            <div class="invalid-feedback">
+                                L'indirizzo email è obbligatorio e deve essere valido.
+                            </div>
                         </div>
                         <div class="form-text text-muted mt-2">
                             <i class="bi bi-info-circle me-1"></i>
-                            <small>Modifica il nome del file (senza estensione se non necessaria)</small>
+                            <small>Inserisci un indirizzo email valido</small>
                         </div>
                     </div>
-
-                                 
+                    
                     <!-- Alert informativo -->
                     <div class="alert alert-info border-0 shadow-sm d-flex align-items-center" role="alert">
                         <i class="bi bi-lightbulb-fill fs-4 me-3 text-warning"></i>
                         <div>
                             <strong class="d-block">Informazione Importante:</strong>
-                            <small>La data di upload non può essere modificata e rimarrà quella originale del file.</small>
+                            <small>L'ID utente associato a questa email non può essere modificato tramite questo form.</small>
                         </div>
                     </div>
                 </form>
@@ -85,7 +65,7 @@
                         <i class="bi bi-x-circle me-2"></i>
                         Annulla
                     </button>
-                    <button type="submit" form="editFileForm" class="btn btn-warning btn-lg px-4 fw-semibold shadow">
+                    <button type="submit" form="editEmailForm" class="btn btn-warning btn-lg px-4 fw-semibold shadow">
                         <i class="bi bi-check-circle me-2"></i>
                         Salva Modifiche
                     </button>

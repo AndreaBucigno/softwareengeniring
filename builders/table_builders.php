@@ -95,7 +95,9 @@ function buildFilesTable($filter_id = null)
     return $TABELLA_FILES;
 }
 
-// Costruisce tabella email
+
+
+//TABELLA DELLE EMAIL
 function buildEmailsTable($filter_id = null)
 {
     $connessione = getDBConnection();

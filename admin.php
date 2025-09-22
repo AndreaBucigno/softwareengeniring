@@ -25,6 +25,22 @@ if (isset($_POST['elimina_file_id'])) {
     $messageType = $result['type'];
 }
 
+// GESTIONE MODIFICA EMAIL
+if (isset($_POST['modifica_email_id'])) {
+    $email_id = intval($_POST['modifica_email_id']);
+    $id_utente = intval($_POST['modifica_email_id_utente']);
+    $nome_email = trim($_POST['nome_email']);
+    $id_dominio = intval($_POST['modifica_email_id_dominio']);
+
+    $result = modificaEmail($email_id, $id_utente, $nome_email, $id_dominio);
+    $message = $result['message'];
+    $messageType = $result['type'];
+
+    // Redirect per evitare ri-esecuzione
+    header("Location: admin.php");
+    exit();
+}
+
 // GESTIONE MODIFICA FILE
 if (isset($_POST['modifica_file_id'])) {
     $file_id = intval($_POST['modifica_file_id']);

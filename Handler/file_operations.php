@@ -25,6 +25,8 @@ function eliminaFile($file_id)
     return $result;
 }
 
+
+
 // Modifica file
 function modificaFile($file_id, $id_utente, $nome_file, $disponibile)
 {
@@ -69,4 +71,36 @@ function getNome($id_file, $nome_file){
         $time_stamp =substr($row['nome_file'],0,11);
         return $time_stamp . $nome_file;
     }
+}
+
+
+function modificaEmail($email_id, $id_utente, $nome_email, $id_dominio)
+{
+    $connessione = getDBConnection();
+    
+    // Controllo se la nuova email esiste già (escludendo quella corrente)
+    $checkSql = "SELECT nome_email FROM email WHERE nome_email = ? AND id != ?";
+    $check_stmt = $connessione->prepare($checkSql);
+    $check_stmt->bind_param("si", $nome_email, $email_id);
+    $check_stmt->execute();
+    $check_result = $check_stmt->get_result();
+
+    if ($check_result->num_rows > 0) {
+        $result = ['message' => "Errore: L'email '$nome_email' è già registrata nel sistema", 'type' => 'danger'];
+    } else {
+        $sql = "UPDATE email SET nome_email = ?, id_utente = ?, id_dominio = ? WHERE id = ?";
+        $stmt = $connessione->prepare($sql);
+        $stmt->bind_param("siii", $nome_email, $id_utente, $id_dominio, $email_id);
+
+        if ($stmt->execute()) {
+            $result = ['message' => "Email modificata correttamente", 'type' => 'success'];
+        } else {
+            $result = ['message' => "Errore nella modifica dell'email: " . $stmt->error, 'type' => 'danger'];
+        }
+        $stmt->close();
+    }
+    
+    $check_stmt->close();
+    $connessione->close();
+    return $result;
 }

@@ -19,6 +19,8 @@ function buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI,
             </div>';
     }
 
+    
+
     $body .= $modal_edit . $modal_edit_Email;
 
     $body .= '<!-- Bottone toggle per utente -->
