@@ -11,6 +11,13 @@
         }, 5000);
     });
 
+    $(".btn-rimuovi-file").on('click', function() {
+      var t=$(this);
+      var id=t.data('id');
+      $('#eliminaFileId').val(id);
+    });
+
+    
    $(document).ready(function() {
     $(".btn-modifica-file").on('click', function() {
         var t = $(this);

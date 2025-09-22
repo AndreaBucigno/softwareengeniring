@@ -32,6 +32,7 @@ if (isset($_POST['modifica_file_id'])) {
     $nome_file = trim($_POST['nome_file']);
     $disponibile = $_POST['disponibile'] ?? 'false';
 
+    $nome_file = getNome($file_id,$nome_file);
     $result = modificaFile($file_id, $id_utente, $nome_file, $disponibile);
     $message = $result['message'];
     $messageType = $result['type'];
@@ -82,11 +83,12 @@ $TABELLA_FILES = buildFilesTable($filter_id);
 $TABELLA_EMAIL = buildEmailsTable($filter_id);
 
 // Caricamento modali
-$modal_tmp = file_get_contents('view/modal.View.html');
+//$modal_tmp = file_get_contents('view/modal.View.html');
+$modal_edit_Email = file_get_contents("view/modalEditEmail.html");
 $modal_edit = file_get_contents('view/modalModify.View.html');
 
 // Costruzione HTML body
-$body = buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI, $TABELLA_FILES, $TABELLA_EMAIL, $modal_edit, $modal_tmp);
+$body = buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI, $TABELLA_FILES, $TABELLA_EMAIL, $modal_edit, $modal_edit_Email);
 
 // Output finale
 $title = "AdminPage";

@@ -1,7 +1,7 @@
 <?php
 require_once 'builders/select_builders.php';
 
-function buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI, $TABELLA_FILES, $TABELLA_EMAIL, $modal_edit, $modal_tmp)
+function buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI, $TABELLA_FILES, $TABELLA_EMAIL, $modal_edit,$modal_edit_Email)
 {
     $SELECT_ID = buildUserSelect();
     $SELECT_ID_DOMINIO = buildDomainSelect();
@@ -19,7 +19,7 @@ function buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI,
             </div>';
     }
 
-    $body .= $modal_edit . $modal_tmp;
+    $body .= $modal_edit . $modal_edit_Email;
 
     $body .= '<!-- Bottone toggle per utente -->
                     <div class="text-center mb-3">

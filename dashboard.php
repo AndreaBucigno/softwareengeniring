@@ -26,7 +26,7 @@ for ($i = 0; $i < $result->num_rows; $i++) {
 }
 
 //COSTRUZIONE TABELLA FILES
-$sql = "SELECT * FROM files WHERE id_utente = '$user_id'";
+$sql = "SELECT * FROM files WHERE id_utente = '$user_id' AND disponibile = 'true'";
 
 $result = $connessione->query($sql);
 $TABELLA_FILES = "";

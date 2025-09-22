@@ -5,7 +5,8 @@ require_once 'config/database.php';
 function eliminaFile($file_id)
 {
     $connessione = getDBConnection();
-
+    // se ti ci serve il button elimina <button class='btn btn-danger btn-sm btn-rimuovi-file' data-id='" . $row['id'] . "' data-bs-toggle='modal' data-bs-target='#exampleModal'>
+    //<i class='bi bi-trash'></i> Elimina </button>
     $sql = "UPDATE files SET disponibile = 'false' WHERE id = ?";
     $stmt = $connessione->prepare($sql);
     if (!$stmt) {
@@ -28,7 +29,7 @@ function eliminaFile($file_id)
 function modificaFile($file_id, $id_utente, $nome_file, $disponibile)
 {
     $connessione = getDBConnection();
-
+   
     if ($disponibile !== 'true' && $disponibile !== 'false') {
         $disponibile = 'false';
     }
@@ -46,4 +47,26 @@ function modificaFile($file_id, $id_utente, $nome_file, $disponibile)
     $stmt->close();
     $connessione->close();
     return $result;
+}
+
+
+
+function getNome($id_file, $nome_file){
+    $connessione = getDBConnection();
+
+    $sql = "SELECT nome_file FROM files WHERE id = ?";
+    $stmt = $connessione->prepare($sql);
+    $stmt->bind_param("i", $id_file);
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $row =$result->fetch_array();
+
+    if($nome_file === $row['nome_file']){
+        return $nome_file;
+    }else{
+        $time_stamp =substr($row['nome_file'],0,11);
+        return $time_stamp . $nome_file;
+    }
 }

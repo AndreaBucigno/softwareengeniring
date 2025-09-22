@@ -21,9 +21,6 @@ function buildUsersTable()
                         <button class='btn btn-warning btn-sm me-2'>
                             <i class='bi bi-pencil-square'></i> Modifica
                         </button>
-                        <button class='btn btn-danger btn-sm'>
-                            <i class='bi bi-trash'></i> Elimina
-                        </button> 
                     </td>
                     <td><a href='admin.php?filter_id=" . $row['ID'] . "' class='btn btn-success btn-sm'><i class='bi bi-filter'></i>Filtra</a></td>
                 </tr>";
@@ -56,9 +53,7 @@ function buildDomainsTable($filter_id = null)
                         <button class='btn btn-warning btn-sm me-2'>
                             <i class='bi bi-pencil-square'></i> Modifica
                         </button>
-                        <button class='btn btn-danger btn-sm'>
-                            <i class='bi bi-trash'></i> Elimina
-                        </button> 
+                        
                     </td>
                 </tr>";
     }
@@ -91,9 +86,7 @@ function buildFilesTable($filter_id = null)
                         <button class='btn btn-warning btn-sm me-2 btn-modifica-file' data-id='" . $row['id'] . "' data-bs-toggle='modal' data-bs-target='#editFileModal'>
                             <i class='bi bi-pencil-square'></i> Modifica
                         </button>
-                        <button class='btn btn-danger btn-sm btn-rimuovi-file' data-id='" . $row['id'] . "' data-bs-toggle='modal' data-bs-target='#exampleModal'>
-                        <i class='bi bi-trash'></i> Elimina
-                    </button>
+                        
                     </td>
                 </tr>";
     }
@@ -122,12 +115,9 @@ function buildEmailsTable($filter_id = null)
                     <td>" . $row['id_dominio'] . "</td>
                     <td>" . $row['nome_email'] . "</td>
                     <td>
-                        <button class='btn btn-warning btn-sm me-2'>
+                        <button class='btn btn-warning btn-sm me-2 btn-modifica-email' data-id='" . $row['id'] . "' data-bs-toggle='modal' data-bs-target='#editEmailModal'>
                             <i class='bi bi-pencil-square'></i> Modifica
                         </button>
-                        <button class='btn btn-danger btn-sm'>
-                            <i class='bi bi-trash'></i> Elimina
-                        </button> 
                     </td>
                 </tr>";
     }
