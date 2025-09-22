@@ -18,7 +18,17 @@ function buildUsersTable()
                     <td>" . $row['attivo'] . "</td>
                     <td>" . $row['data_registrazione'] . "</td>
                     <td>
-                        <button class='btn btn-warning btn-sm me-2'>
+                        <button class='btn btn-warning btn-sm me-2 btn-modifica-utente' 
+                                data-id='" . $row['ID'] . "'
+                                data-email='" . htmlspecialchars($row['Email']) . "'
+                                data-nome='" . htmlspecialchars($row['Nome']) . "'
+                                data-numero='" . htmlspecialchars($row['numero']) . "'
+                                data-azienda='" . htmlspecialchars($row['azienda']) . "'
+                                data-ruolo='" . $row['ruolo'] . "'
+                                data-attivo='" . $row['attivo'] . "'
+                                data-data='" . $row['data_registrazione'] . "'
+                                data-bs-toggle='modal' 
+                                data-bs-target='#editUtenteModal'>
                             <i class='bi bi-pencil-square'></i> Modifica
                         </button>
                     </td>
@@ -94,8 +104,6 @@ function buildFilesTable($filter_id = null)
     $connessione->close();
     return $TABELLA_FILES;
 }
-
-
 
 //TABELLA DELLE EMAIL
 function buildEmailsTable($filter_id = null)

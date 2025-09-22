@@ -48,8 +48,29 @@ if (isset($_POST['modifica_file_id'])) {
     $nome_file = trim($_POST['nome_file']);
     $disponibile = $_POST['disponibile'] ?? 'false';
 
-    $nome_file = getNome($file_id,$nome_file);
+    $nome_file = getNome($file_id, $nome_file);
     $result = modificaFile($file_id, $id_utente, $nome_file, $disponibile);
+    $message = $result['message'];
+    $messageType = $result['type'];
+
+    // Redirect per evitare ri-esecuzione
+    header("Location: admin.php");
+    exit();
+}
+
+// GESTIONE MODIFICA UTENTE
+if (isset($_POST['modifica_utente_id'])) {
+    $user_id = intval($_POST['modifica_utente_id']);
+    $email = trim($_POST['email']);
+    $nome = trim($_POST['name']);
+    $numero = trim($_POST['numero']);
+    $azienda = trim($_POST['NomeAzienda']);
+    $ruolo = trim($_POST['ruolo']);
+    $data_registrazione = trim($_POST['dataRegistrazione']);
+    $attivo = trim($_POST['Attivo']);
+    $password = trim($_POST['password']); // Può essere vuota
+
+    $result = modificaUtente($user_id, $email, $nome, $numero, $azienda, $ruolo, $data_registrazione, $attivo, $password);
     $message = $result['message'];
     $messageType = $result['type'];
 
@@ -61,7 +82,7 @@ if (isset($_POST['modifica_file_id'])) {
 // GESTIONE FORM POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Form utente
-    if (isset($_POST["email"])) {
+    if (isset($_POST["email"]) && !isset($_POST['modifica_utente_id'])) {
         $result = handleUserForm($_POST);
         $message = $result['message'];
         $messageType = $result['type'];
@@ -99,12 +120,12 @@ $TABELLA_FILES = buildFilesTable($filter_id);
 $TABELLA_EMAIL = buildEmailsTable($filter_id);
 
 // Caricamento modali
-//$modal_tmp = file_get_contents('view/modal.View.html');
 $modal_edit_Email = file_get_contents("view/modalEditEmail.html");
 $modal_edit = file_get_contents('view/modalModify.View.html');
+$modal_edit_Utente = file_get_contents('view/modalEditUtente.html');
 
 // Costruzione HTML body
-$body = buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI, $TABELLA_FILES, $TABELLA_EMAIL, $modal_edit, $modal_edit_Email);
+$body = buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI, $TABELLA_FILES, $TABELLA_EMAIL, $modal_edit, $modal_edit_Email, $modal_edit_Utente);
 
 // Output finale
 $title = "AdminPage";

@@ -1,0 +1,186 @@
+<div class="modal fade" id="editUtenteModal" tabindex="-1" aria-labelledby="editUtenteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content bg-dark border-warning">
+            <div class="modal-header bg-warning text-dark border-0">
+                <h5 class="modal-title fw-bold" id="editUtenteModalLabel">
+                    <i class="bi bi-person-fill-gear me-2"></i>
+                    Modifica Utente
+                </h5>
+                <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form method="POST" action="admin.php" id="editUtenteForm" class="needs-validation" novalidate>
+                    <input type="hidden" name="modifica_utente_id" id="modificaUtenteId" value="">
+                    
+                    <div class="row">
+                        <!-- Email -->
+                        <div class="col-md-6 mb-3">
+                            <label for="editUtenteEmail" class="form-label text-white fw-semibold">
+                                <i class="bi bi-envelope me-1 text-info"></i>
+                                Email Address
+                            </label>
+                            <div class="input-group input-group-lg shadow-sm">
+                                <span class="input-group-text bg-secondary text-white border-0">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                                <input type="email" class="form-control" id="editUtenteEmail" name="email" required 
+                                       placeholder="Inserisci email">
+                                <div class="invalid-feedback">
+                                    L'email è obbligatoria e deve essere valida.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nome e Cognome -->
+                        <div class="col-md-6 mb-3">
+                            <label for="editUtenteNome" class="form-label text-white fw-semibold">
+                                <i class="bi bi-person me-1 text-success"></i>
+                                Nome e Cognome
+                            </label>
+                            <div class="input-group input-group-lg shadow-sm">
+                                <span class="input-group-text bg-secondary text-white border-0">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                                <input type="text" class="form-control" id="editUtenteNome" name="name" required 
+                                       placeholder="Inserisci nome e cognome">
+                                <div class="invalid-feedback">
+                                    Il nome è obbligatorio.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Numero di Telefono -->
+                        <div class="col-md-6 mb-3">
+                            <label for="editUtenteNumero" class="form-label text-white fw-semibold">
+                                <i class="bi bi-telephone me-1 text-primary"></i>
+                                Numero di Telefono
+                            </label>
+                            <div class="input-group input-group-lg shadow-sm">
+                                <span class="input-group-text bg-secondary text-white border-0">
+                                    <i class="bi bi-telephone"></i>
+                                </span>
+                                <input type="text" class="form-control" id="editUtenteNumero" name="numero" required 
+                                       placeholder="Inserisci numero">
+                                <div class="invalid-feedback">
+                                    Il numero di telefono è obbligatorio.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nome Azienda -->
+                        <div class="col-md-6 mb-3">
+                            <label for="editUtenteAzienda" class="form-label text-white fw-semibold">
+                                <i class="bi bi-building me-1 text-warning"></i>
+                                Nome Azienda
+                            </label>
+                            <div class="input-group input-group-lg shadow-sm">
+                                <span class="input-group-text bg-secondary text-white border-0">
+                                    <i class="bi bi-building"></i>
+                                </span>
+                                <input type="text" class="form-control" id="editUtenteAzienda" name="NomeAzienda" required 
+                                       placeholder="Inserisci nome azienda">
+                                <div class="invalid-feedback">
+                                    Il nome dell'azienda è obbligatorio.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ruolo -->
+                        <div class="col-md-6 mb-3">
+                            <label for="editUtenteRuolo" class="form-label text-white fw-semibold">
+                                <i class="bi bi-person-badge me-1 text-info"></i>
+                                Ruolo
+                            </label>
+                            <select class="form-select form-select-lg shadow-sm" name="ruolo" id="editUtenteRuolo" required>
+                                <option value="" disabled>Seleziona tipo di utente</option>
+                                <option value="admin">Admin</option>
+                                <option value="user">Utente</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Seleziona un ruolo.
+                            </div>
+                        </div>
+
+                        <!-- Data Registrazione -->
+                        <div class="col-md-6 mb-3">
+                            <label for="editUtenteDataRegistrazione" class="form-label text-white fw-semibold">
+                                <i class="bi bi-calendar me-1 text-success"></i>
+                                Data Registrazione
+                            </label>
+                            <div class="input-group input-group-lg shadow-sm">
+                                <span class="input-group-text bg-secondary text-white border-0">
+                                    <i class="bi bi-calendar"></i>
+                                </span>
+                                <input type="date" class="form-control" id="editUtenteDataRegistrazione" name="dataRegistrazione" required>
+                                <div class="invalid-feedback">
+                                    La data di registrazione è obbligatoria.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Stato Attivo -->
+                        <div class="col-md-6 mb-3">
+                            <label for="editUtenteAttivo" class="form-label text-white fw-semibold">
+                                <i class="bi bi-toggle-on me-1 text-success"></i>
+                                Stato Attivo
+                            </label>
+                            <select class="form-select form-select-lg shadow-sm" name="Attivo" id="editUtenteAttivo" required>
+                                <option value="" disabled>Seleziona Stato</option>
+                                <option value="true">Attivo</option>
+                                <option value="false">Inattivo</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Seleziona lo stato.
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="col-md-6 mb-3">
+                            <label for="editUtentePassword" class="form-label text-white fw-semibold">
+                                <i class="bi bi-key me-1 text-danger"></i>
+                                Password
+                                <small class="text-muted">(lascia vuoto per non modificare)</small>
+                            </label>
+                            <div class="input-group input-group-lg shadow-sm">
+                                <span class="input-group-text bg-secondary text-white border-0">
+                                    <i class="bi bi-key"></i>
+                                </span>
+                                <input type="password" class="form-control" id="editUtentePassword" name="password" 
+                                       placeholder="Nuova password (opzionale)">
+                            </div>
+                            <div class="form-text text-muted mt-2">
+                                <i class="bi bi-info-circle me-1"></i>
+                                <small>Lascia vuoto per mantenere la password attuale</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Alert informativo -->
+                    <div class="alert alert-info border-0 shadow-sm d-flex align-items-center" role="alert">
+                        <i class="bi bi-lightbulb-fill fs-4 me-3 text-warning"></i>
+                        <div>
+                            <strong class="d-block">Informazioni Importanti:</strong>
+                            <small>
+                                • L'email deve essere univoca nel sistema<br>
+                                • La password è opzionale: lascia vuoto per non modificarla<br>
+                                • Tutti gli altri campi sono obbligatori
+                            </small>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer bg-dark border-warning pt-3">
+                <div class="d-flex gap-2 w-100 justify-content-end">
+                    <button type="button" class="btn btn-outline-secondary btn-lg px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i>
+                        Annulla
+                    </button>
+                    <button type="submit" form="editUtenteForm" class="btn btn-warning btn-lg px-4 fw-semibold shadow">
+                        <i class="bi bi-check-circle me-2"></i>
+                        Salva Modifiche
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

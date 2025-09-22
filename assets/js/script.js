@@ -71,3 +71,33 @@ function populateDomainSelect() {
         selectDominio.append('<option value="' + idDominio + '">' + idDominio + ' - ' + nomeDominio + '</option>');
     });
 }
+
+
+// Gestione modal modifica utente
+$(document).ready(function() {
+    $(".btn-modifica-utente").on('click', function() {
+        var t = $(this);
+        var id = t.data('id');
+        $("#modificaUtenteId").val(id);
+        
+
+        var email = t.data('email');
+        var nome = t.data('nome');
+        var numero = t.data('numero');
+        var azienda = t.data('azienda');
+        var ruolo = t.data('ruolo');
+        var attivo = t.data('attivo');
+        var dataRegistrazione = t.data('data');
+
+
+        $("#editUtenteEmail").val(email);
+        $("#editUtenteNome").val(nome);
+        $("#editUtenteNumero").val(numero);
+        $("#editUtenteAzienda").val(azienda);
+        $("#editUtenteRuolo").val(ruolo);
+        $("#editUtenteAttivo").val(attivo);
+        $("#editUtenteDataRegistrazione").val(dataRegistrazione);
+        
+        $("#editUtentePassword").val('');
+    });
+});
