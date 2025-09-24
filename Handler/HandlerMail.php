@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/assets/lib/vendor/autoload.php';
-require_once __DIR__ . '/config/database.php';
-require_once __DIR__ . '/builder/mailBuilder.php';
+require_once __DIR__ . '/../assets/lib/vendor/autoload.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../builders/mailbuilder.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -47,7 +47,7 @@ function sendMail($email_destinatario, $nome_dominio, $scadenza, $nome_destinata
         $mail->addAddress($email_destinatario, $nome_destinatario);
         
         $mail->isHTML(true);
-        $mail->Subject = getOggettoEmail($nome_dominio, $scadenza);
+        $mail->Subject = "test";
         $mail->Body = getBodyEmail($nome_dominio, $scadenza, $nome_destinatario);
         
         $mail->send();

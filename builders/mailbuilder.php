@@ -63,7 +63,3 @@ function getBodyEmail($nome_dominio,$scadenza,$nome_destinatario){
     return $body;
 }
 
-function getOggettoEmail(){
-    $oggetto = 'Uno dei tuoi domini è in scadenza';
-    return $oggetto;
-}
