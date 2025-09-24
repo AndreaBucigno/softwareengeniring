@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Controllo sessione
+// Controllo sessione test
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["ruolo"] !== "admin") {
     header("Location: login.php");
     exit();

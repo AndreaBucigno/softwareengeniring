@@ -1,28 +1,11 @@
 <?php
 
-require __DIR__ . '/assets/lib//vendor/autoload.php';
-require_once '/config/database.php';
-require_once '/builder/mailBuilder.php';
+require_once __DIR__ . '/assets/lib/vendor/autoload.php';
+require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/builder/mailBuilder.php';
 
-use LDAP\Result;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
-$connessione = getDBConnection();
-
-$scadenza_breve = new DateTime('Y-m-d')->modify("+7 days");
-$scadenza_lunga = new DateTime('Y-m-d')->modify("+30 days");
-
-
-$sql = "SELECT * FROM domini,utenti WHERE domini.id_utente = utenti.ID AND scadenza = $scadenza_breve OR scadenza = $scadenza_lunga";
-$result=$connessione->query($sql);
-$row = $result->fetch_array();
-foreach($result as $row){
-    sendMail($row['Email'],$row['nome_dominio'],$row['scadenza'],$row['Nome']);
-}
-
-$connessione->close();
-
 
 function getMailerInstance() {
     $mail = new PHPMailer(true);
@@ -43,20 +26,29 @@ function getMailerInstance() {
     }
 }
 
+function calcolaGiorniRimanenti($scadenza) {
+    $oggi = new DateTime();
+    $data_scadenza = new DateTime($scadenza);
+    $differenza = $oggi->diff($data_scadenza);
+    return $differenza->days;
+}
 
-function sendMail($email_destinatario,$nome_dominio,$scadenza,$nome_destinatario){
-    $mail = getMailerInstance();
+function getOggettoEmail($nome_dominio, $scadenza) {
+    $giorni = calcolaGiorniRimanenti($scadenza);
+    return "Promemoria Scadenza Dominio: {$nome_dominio} scade tra {$giorni} giorni";
+}
 
+function sendMail($email_destinatario, $nome_dominio, $scadenza, $nome_destinatario) {
     $mail = getMailerInstance();
     if (!$mail) return false;
     
     try {
-        $mail->setFrom('14de26fbf5928362f092f82407cf6c1c');
+        $mail->setFrom('noreply@tuodominio.com', 'Tuo Nome Azienda');
         $mail->addAddress($email_destinatario, $nome_destinatario);
         
         $mail->isHTML(true);
-        $mail->Subject = getOggettoEmail();
-        $mail->Body = getBodyEmail($nome_dominio,$scadenza,$nome_destinatario);
+        $mail->Subject = getOggettoEmail($nome_dominio, $scadenza);
+        $mail->Body = getBodyEmail($nome_dominio, $scadenza, $nome_destinatario);
         
         $mail->send();
         return true;
@@ -64,5 +56,21 @@ function sendMail($email_destinatario,$nome_dominio,$scadenza,$nome_destinatario
     } catch (Exception $e) {
         return false;
     }
-
 }
+
+// Esecuzione principale
+$connessione = getDBConnection();
+$dataOdierna = new DateTime();
+$scadenza_breve = (clone $dataOdierna)->modify("+7 days")->format('Y-m-d');
+$scadenza_lunga = (clone $dataOdierna)->modify("+30 days")->format('Y-m-d');
+
+$sql = "SELECT * FROM domini, utenti WHERE domini.id_utente = utenti.ID AND (scadenza = '$scadenza_breve' OR scadenza = '$scadenza_lunga')";
+$result = $connessione->query($sql);
+
+if ($result) {
+    while($row = $result->fetch_assoc()) {
+        sendMail($row['Email'], $row['nome_dominio'], $row['scadenza'], $row['Nome']);
+    }
+}
+
+$connessione->close();

@@ -10,35 +10,35 @@ function getBodyEmail($nome_dominio,$scadenza,$nome_destinatario){
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center;">
             <h1 style="margin: 0 0 10px 0; font-size: 24px;">🔔 Promemoria Scadenza Dominio</h1>
             <p style="margin: 0; font-size: 16px;">Il tuo dominio scade il</p>
-            <div style="font-size: 28px; color: #ffeb3b; font-weight: bold; margin: 10px 0;">
-                <?php echo $scadenza> giorni
+            <div style="font-size: 28px; color: #ffeb3b; font-weight: bold; margin: 10px 0;">'
+                . $scadenza . ' giorni
             </div>
         </div>
 
         <!-- Contenuto -->
         <div style="padding: 30px;">
-            <p style="margin: 0 0 20px 0;">Ciao <strong><?php echo $nome_destinatario; ?></strong>,</p>
+            <p style="margin: 0 0 20px 0;">Ciao <strong>' . $nome_destinatario . '</strong>,</p>
             
             <p style="margin: 0 0 20px 0;">Ti informiamo che il tuo dominio registrato sta per scadere.</p>
             
             <!-- Box dominio -->
             <div style="background: white; padding: 15px; border-left: 4px solid #667eea; margin: 20px 0; font-size: 18px; font-weight: bold; border: 1px solid #e0e0e0;">
-                🌐 <?php echo $nome_dominio; ?>
+                🌐 ' . $nome_dominio . '
             </div>
 
             <!-- Tabella informazioni -->
             <table style="width: 100%; border-collapse: collapse; margin: 20px 0;" cellpadding="8" cellspacing="0">
                 <tr>
                     <td style="border-bottom: 1px solid #ddd; font-weight: bold; width: 30%;">Dominio:</td>
-                    <td style="border-bottom: 1px solid #ddd;"><?php echo $nome_dominio; ?></td>
+                    <td style="border-bottom: 1px solid #ddd;">' . $nome_dominio . '</td>
                 </tr>
                 <tr>
                     <td style="border-bottom: 1px solid #ddd; font-weight: bold;">Data di scadenza:</td>
-                    <td style="border-bottom: 1px solid #ddd;"><?php echo $scadenza; ?></td>
+                    <td style="border-bottom: 1px solid #ddd;">' . $scadenza . '</td>
                 </tr>
                 <tr>
                     <td style="border-bottom: 1px solid #ddd; font-weight: bold;">Registrante:</td>
-                    <td style="border-bottom: 1px solid #ddd;"><?php echo $nome_destinatario; ?></td>
+                    <td style="border-bottom: 1px solid #ddd;">' . $nome_destinatario . '</td>
                 </tr>
             </table>
 
@@ -54,16 +54,16 @@ function getBodyEmail($nome_dominio,$scadenza,$nome_destinatario){
 
             <p style="margin: 0;">
                 Cordiali saluti,<br>
-                <strong>Il Team di <?php echo SOFTWAREENGINEERING; ?></strong>
+                <strong>Il Team di SOFTWAREENGINEERING</strong>
             </p>
-        </div>    
-';
-
+        </div>
+    </div>
+</body></html>';
+    
     return $body;
 }
 
-
 function getOggettoEmail(){
-    $oggetto='<p>Uno dei tuoi domini è in scadenza</p>';
+    $oggetto = 'Uno dei tuoi domini è in scadenza';
     return $oggetto;
 }
