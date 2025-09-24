@@ -57,6 +57,7 @@ function handleDomainForm($postData)
 
     $id_utente = trim($postData["id_utente"]);
     $nome_dominio = trim($postData["nome_dominio"]);
+    $scadenza = trim($postData["scadenza"]);
 
     $checkSql = "SELECT nome_dominio FROM domini WHERE nome_dominio = ?";
     $check_stmt = $connessione->prepare($checkSql);
@@ -70,9 +71,9 @@ function handleDomainForm($postData)
             'type' => 'danger'
         ];
     } else {
-        $sql = "INSERT INTO domini (id_utente, nome_dominio, data_registrazione) VALUES (?, ?, CURDATE())";
+        $sql = "INSERT INTO domini (id_utente, nome_dominio, data_registrazione, scadenza) VALUES (?, ?, CURDATE(), ?)";
         $stmt = $connessione->prepare($sql);
-        $stmt->bind_param("is", $id_utente, $nome_dominio);
+        $stmt->bind_param("iss", $id_utente, $nome_dominio,$scadenza);
 
         if ($stmt->execute()) {
             $result = [

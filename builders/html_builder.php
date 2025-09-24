@@ -107,9 +107,16 @@ function buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI,
                                     <label for="nome_dominio" class="form-label">Nome Dominio</label>
                                     <input type="text" class="form-control" id="nome_dominio" name="nome_dominio" required> 
                                 </div>
+
+                                <div class="mb-3">
+                                    <label for="scadenza" class="form-label">Data di Scadenza del Dominio</label>
+                                    <input type="date" class="form-control" id="scadenza" name="scadenza" required>
+                                </div>
+
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-success btn-block">Crea Dominio</button>
                                 </div>
+
                             </form>
                         </div>
                     </div>
