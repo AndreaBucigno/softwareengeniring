@@ -20,6 +20,7 @@ function buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI,
     }
 
     $body .= $modal_edit . $modal_edit_Email . $modal_edit_Utente;
+    $ts=time();
 
     $body .= '<!-- Bottone toggle per utente -->
                     <div class="text-center mb-3">
@@ -81,6 +82,8 @@ function buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI,
                                     <input type="password" class="form-control" id="password" name="password" required>
                                 </div>
 
+                                <input type="hidden" name="timeStamp" value="'.$ts.'">
+
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-success btn-block">Crea Utente</button>
                                 </div>
@@ -113,6 +116,8 @@ function buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI,
                                     <input type="date" class="form-control" id="scadenza" name="scadenza" required>
                                 </div>
 
+                                <input name="timeStamp" type="hidden" value="'.$ts.'">
+
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-success btn-block">Crea Dominio</button>
                                 </div>
@@ -144,6 +149,9 @@ function buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI,
                                     <label for="formFile" class="form-label">Upload a file</label>
                                     <input class="form-control" type="file" id="formFile">
                                 </div>
+
+                                <input name="timeStamp" type="hidden" value="'.$ts.'">
+
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-success btn-block">Aggiungi File</button>
                                 </div>
@@ -176,6 +184,8 @@ function buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI,
                                     <label for="exampleInputEmail1" class="form-label">Email address</label>
                                     <input type="email" class="form-control" id="exampleInputEmail1" name="email_form_email" required>
                                 </div>
+
+                                <input name="timeStamp" type="hidden" value="'.$ts.'">
 
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-success btn-block">Aggiungi Email</button>

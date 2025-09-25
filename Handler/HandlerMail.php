@@ -13,10 +13,10 @@ function getMailerInstance() {
     try {
         // Configurazione server Mailjet
         $mail->isSMTP();
-        $mail->Host       = 'in-v3.mailjet.com';
+        $mail->Host       = 'pro.turbo-smtp.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = '14de26fbf5928362f092f82407cf6c1c';
-        $mail->Password   = '9ecf49a7e10b8b4bbb2812aeb66826ab';
+        $mail->Username   = 'bucignoscuola@gmail.com';
+        $mail->Password   = 'Andre@2308.11';
         $mail->SMTPSecure = 'ssl';
         $mail->Port       = 465;
         
@@ -69,6 +69,7 @@ $result = $connessione->query($sql);
 
 if ($result) {
     while($row = $result->fetch_assoc()) {
+        
         sendMail($row['Email'], $row['nome_dominio'], $row['scadenza'], $row['Nome']);
     }
 }

@@ -14,6 +14,10 @@ function handleUserForm($postData)
     $dataRegistrazione = trim($postData["dataRegistrazione"]);
     $Attivo = trim($postData["Attivo"]);
     $password = trim($postData["password"]);
+    $timeStamp = trim($postData["timeStamp"]);
+    
+    
+    if(!isset($_SESSION['timeStamp']) || $_SESSION['timeStamp'] != $timeStamp ){
 
     // Controllo se l'email esiste già
     $check_sql = "SELECT Email FROM utenti WHERE Email = ?";
@@ -28,11 +32,12 @@ function handleUserForm($postData)
             'type' => 'danger'
         ];
     } else {
-        $sql = "INSERT INTO utenti (Email, Nome, numero, azienda, ruolo, data_registrazione, attivo, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO utenti (Email, Nome, numero, azienda, ruolo, data_registrazione, attivo, password, ultimo_accesso) VALUES (?, ?, ?, ?, ?, ?, ?, ?,CURDATE())";
         $stmt = $connessione->prepare($sql);
         $stmt->bind_param("ssssssss", $email, $name, $numero, $NomeAzienda, $ruolo, $dataRegistrazione, $Attivo, $password);
 
         if ($stmt->execute()) {
+            $_SESSION['timeStamp'] = $timeStamp;
             $result = [
                 'message' => "Utente registrato correttamente",
                 'type' => 'success'
@@ -48,6 +53,12 @@ function handleUserForm($postData)
     $check_stmt->close();
     $connessione->close();
     return $result;
+    }else{
+        return [
+        'message' => "Errore: invio troppo rapido, riprova tra qualche secondo",
+        'type' => 'warning'
+        ];
+    }
 }
 
 // Gestione form dominio
@@ -58,6 +69,9 @@ function handleDomainForm($postData)
     $id_utente = trim($postData["id_utente"]);
     $nome_dominio = trim($postData["nome_dominio"]);
     $scadenza = trim($postData["scadenza"]);
+    $timeStamp = trim($postData["timeStamp"]);
+
+    if(!isset($_SESSION['timeStamp']) || $_SESSION['timeStamp'] != $timeStamp ){
 
     $checkSql = "SELECT nome_dominio FROM domini WHERE nome_dominio = ?";
     $check_stmt = $connessione->prepare($checkSql);
@@ -66,6 +80,7 @@ function handleDomainForm($postData)
     $check_result = $check_stmt->get_result();
 
     if ($check_result->num_rows > 0) {
+        
         $result = [
             'message' => "Dominio già registrato",
             'type' => 'danger'
@@ -76,6 +91,7 @@ function handleDomainForm($postData)
         $stmt->bind_param("iss", $id_utente, $nome_dominio,$scadenza);
 
         if ($stmt->execute()) {
+            $_SESSION['timeStamp'] = $timeStamp;
             $result = [
                 'message' => "Dominio registrato correttamente",
                 'type' => 'success'
@@ -91,6 +107,12 @@ function handleDomainForm($postData)
     $check_stmt->close();
     $connessione->close();
     return $result;
+    }else{
+        return [
+        'message' => "Errore: invio troppo rapido, riprova tra qualche secondo",
+        'type' => 'warning'
+        ];
+    }
 }
 
 // Gestione form file
@@ -100,14 +122,19 @@ function handleFileForm($postData)
 
     $id_utente = trim($postData['id_utente']);
     $nome_file = trim($postData['nome_file']);
+
     $data_ora_corrente = time();
     $data_ora_corrente .= "_" . $nome_file;
+    $timeStamp = trim($postData["timeStamp"]);
+
+    if(!isset($_SESSION['timeStamp']) || $_SESSION['timeStamp'] != $timeStamp ){
 
     $sql = "INSERT INTO files(id_utente,nome_file,data_upload,disponibile) VALUES (?,?,CURDATE(),true)";
     $stmt = $connessione->prepare($sql);
     $stmt->bind_param("is", $id_utente, $data_ora_corrente);
 
     if ($stmt->execute()) {
+        $_SESSION['timeStamp'] = $timeStamp;
         $result = [
             'message' => "File registrato correttamente",
             'type' => 'success'
@@ -122,6 +149,12 @@ function handleFileForm($postData)
     $stmt->close();
     $connessione->close();
     return $result;
+    }else{
+        return [
+            'message' => "Errore: invio troppo rapido, riprova tra qualche secondo",
+            'type' => 'warning'
+            ];
+    }
 }
 
 // Gestione form email
@@ -132,6 +165,9 @@ function handleEmailForm($postData)
     $nome_email = trim($postData['email_form_email']);
     $id_utente = trim($postData['id_utente']);
     $id_dominio = trim($postData['id_dominio']);
+    $timeStamp = trim($postData["timeStamp"]);
+
+    if(!isset($_SESSION['timeStamp']) || $_SESSION['timeStamp'] != $timeStamp ){
 
     $checkSql = "SELECT nome_email FROM email WHERE nome_email = ?";
     $check_stmt = $connessione->prepare($checkSql);
@@ -150,6 +186,7 @@ function handleEmailForm($postData)
         $stmt->bind_param("isi", $id_utente, $nome_email, $id_dominio);
 
         if ($stmt->execute()) {
+            $_SESSION['timeStamp'] = $timeStamp;
             $result = [
                 'message' => "Email registrata correttamente",
                 'type' => 'success'
@@ -165,4 +202,10 @@ function handleEmailForm($postData)
     $check_stmt->close();
     $connessione->close();
     return $result;
+    }else{
+        return [
+            'message' => "Errore: invio troppo rapido, riprova tra qualche secondo",
+            'type' => 'warning'
+            ];
+    }
 }

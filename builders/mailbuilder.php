@@ -11,7 +11,7 @@ function getBodyEmail($nome_dominio,$scadenza,$nome_destinatario){
             <h1 style="margin: 0 0 10px 0; font-size: 24px;">🔔 Promemoria Scadenza Dominio</h1>
             <p style="margin: 0; font-size: 16px;">Il tuo dominio scade il</p>
             <div style="font-size: 28px; color: #ffeb3b; font-weight: bold; margin: 10px 0;">'
-                . $scadenza . ' giorni
+                . $scadenza . '
             </div>
         </div>
 

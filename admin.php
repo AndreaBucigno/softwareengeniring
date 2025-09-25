@@ -122,7 +122,7 @@ $TABELLA_EMAIL = buildEmailsTable($filter_id);
 // Caricamento modali
 $modal_edit_Email = file_get_contents("view/modalEditEmail.html");
 $modal_edit = file_get_contents('view/modalModify.View.html');
-$modal_edit_Utente = file_get_contents('view/modalEditUtente.html');
+$modal_edit_Utente = file_get_contents('view/ModalEditUtente.html');
 
 // Costruzione HTML body
 $body = buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI, $TABELLA_FILES, $TABELLA_EMAIL, $modal_edit, $modal_edit_Email, $modal_edit_Utente);
