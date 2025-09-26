@@ -145,3 +145,35 @@ function modificaUtente($user_id, $email, $nome, $numero, $azienda, $ruolo, $dat
     $connessione->close();
     return $result;
 }
+
+
+function modificaDominio($dominio_id, $id_utente, $nome_dominio, $scadenza)
+{
+    $connessione = getDBConnection();
+
+    // Controllo se il nome dominio esiste già (escludendo quello corrente)
+    $checkSql = "SELECT nome_dominio FROM domini WHERE nome_dominio = ? AND id != ?";
+    $check_stmt = $connessione->prepare($checkSql);
+    $check_stmt->bind_param("si", $nome_dominio, $dominio_id);
+    $check_stmt->execute();
+    $check_result = $check_stmt->get_result();
+
+    if ($check_result->num_rows > 0) {
+        $result = ['message' => "Errore: Il dominio '$nome_dominio' è già registrato nel sistema", 'type' => 'danger'];
+    } else {
+        $sql = "UPDATE domini SET id_utente = ?, nome_dominio = ?, scadenza = ? WHERE id = ?";
+        $stmt = $connessione->prepare($sql);
+        $stmt->bind_param("issi", $id_utente, $nome_dominio, $scadenza, $dominio_id);
+
+        if ($stmt->execute()) {
+            $result = ['message' => "Dominio modificato correttamente", 'type' => 'success'];
+        } else {
+            $result = ['message' => "Errore nella modifica del dominio: " . $stmt->error, 'type' => 'danger'];
+        }
+        $stmt->close();
+    }
+
+    $check_stmt->close();
+    $connessione->close();
+    return $result;
+}

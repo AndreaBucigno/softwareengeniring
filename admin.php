@@ -17,6 +17,24 @@ require_once 'builders/html_builder.php';
 $message = "";
 $messageType = "";
 
+
+// GESTIONE MODIFICA DOMINIO
+if (isset($_POST['modifica_dominio_id'])) {
+    $dominio_id = intval($_POST['modifica_dominio_id']);
+    $id_utente = intval($_POST['id_utente']);
+    $nome_dominio = trim($_POST['nome_dominio']);
+    $scadenza = trim($_POST['scadenza']);
+
+    $result = modificaDominio($dominio_id, $id_utente, $nome_dominio, $scadenza);
+    $message = $result['message'];
+    $messageType = $result['type'];
+
+
+    header("Location: admin.php");
+    exit();
+}
+
+
 // GESTIONE ELIMINAZIONE FILE
 if (isset($_POST['elimina_file_id'])) {
     $file_id = trim($_POST['elimina_file_id']);
@@ -123,9 +141,10 @@ $TABELLA_EMAIL = buildEmailsTable($filter_id);
 $modal_edit_Email = file_get_contents("view/modalEditEmail.html");
 $modal_edit = file_get_contents('view/modalModify.View.html');
 $modal_edit_Utente = file_get_contents('view/ModalEditUtente.html');
+$modal_edit_Dominio = file_get_contents('view/modalEditDominio.html');
 
 // Costruzione HTML body
-$body = buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI, $TABELLA_FILES, $TABELLA_EMAIL, $modal_edit, $modal_edit_Email, $modal_edit_Utente);
+$body = buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI, $TABELLA_FILES, $TABELLA_EMAIL, $modal_edit, $modal_edit_Email, $modal_edit_Utente,$modal_edit_Dominio);
 
 // Output finale
 $title = "AdminPage";

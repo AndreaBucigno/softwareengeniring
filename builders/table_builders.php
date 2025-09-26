@@ -40,7 +40,7 @@ function buildUsersTable()
     return $TABELLE_UTENTI;
 }
 
-// Costruisce tabella domini
+// Costruisce tabella domini - CORRETTO
 function buildDomainsTable($filter_id = null)
 {
     $connessione = getDBConnection();
@@ -59,11 +59,17 @@ function buildDomainsTable($filter_id = null)
                     <td>" . $row['id_utente'] . "</td>
                     <td>" . $row['nome_dominio'] . "</td>
                     <td>" . $row['data_registrazione'] . "</td>
+                    <td>" . $row['scadenza'] . "</td>
                     <td>
-                        <button class='btn btn-warning btn-sm me-2'>
+                        <button class='btn btn-warning btn-sm me-2 btn-modifica-dominio' 
+                                data-id='" . $row['id'] . "'
+                                data-id-utente='" . $row['id_utente'] . "'
+                                data-nome-dominio='" . htmlspecialchars($row['nome_dominio']) . "'
+                                data-scadenza='" . $row['scadenza'] . "'
+                                data-bs-toggle='modal' 
+                                data-bs-target='#editDominioModal'>
                             <i class='bi bi-pencil-square'></i> Modifica
                         </button>
-                        
                     </td>
                 </tr>";
     }

@@ -1,0 +1,81 @@
+<div class="modal fade" id="editDominioModal" tabindex="-1" aria-labelledby="editDominioModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-dark border-warning">
+            <div class="modal-header bg-warning text-dark border-0">
+                <h5 class="modal-title fw-bold" id="editDominioModalLabel">
+                    <i class="bi bi-globe me-2"></i>
+                    Modifica Dominio
+                </h5>
+                <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form method="POST" action="admin.php" id="editDominioForm" class="needs-validation" novalidate>
+                    <input type="hidden" name="modifica_dominio_id" id="modificaDominioId" value="">
+                    <input type="hidden" name="id_utente" id="editDominioIdUtente" value="">
+                    
+                    <div class="mb-4">
+                        <label for="editDominioNome" class="form-label text-white fw-semibold">
+                            <i class="bi bi-globe me-1 text-info"></i>
+                            Nome Dominio
+                        </label>
+                        <div class="input-group input-group-lg shadow-sm">
+                            <span class="input-group-text bg-secondary text-white border-0">
+                                <i class="bi bi-globe"></i>
+                            </span>
+                            <input type="text" class="form-control" id="editDominioNome" name="nome_dominio" required 
+                                   placeholder="Inserisci il nome del dominio">
+                            <div class="invalid-feedback">
+                                Il nome del dominio è obbligatorio.
+                            </div>
+                        </div>
+                        <div class="form-text text-muted mt-2">
+                            <i class="bi bi-info-circle me-1"></i>
+                            <small>Esempio: example.com, miosito.it</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="editDominioScadenza" class="form-label text-white fw-semibold">
+                            <i class="bi bi-calendar me-1 text-danger"></i>
+                            Data Scadenza
+                        </label>
+                        <div class="input-group input-group-lg shadow-sm">
+                            <span class="input-group-text bg-secondary text-white border-0">
+                                <i class="bi bi-calendar"></i>
+                            </span>
+                            <input type="date" class="form-control" id="editDominioScadenza" name="scadenza" required>
+                            <div class="invalid-feedback">
+                                La data di scadenza è obbligatoria.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Alert informativo -->
+                    <div class="alert alert-info border-0 shadow-sm d-flex align-items-center" role="alert">
+                        <i class="bi bi-lightbulb-fill fs-4 me-3 text-warning"></i>
+                        <div>
+                            <strong class="d-block">Informazioni Importanti:</strong>
+                            <small>
+                                • Il nome del dominio deve essere univoco nel sistema<br>
+                                • L'ID utente associato non può essere modificato<br>
+                                • La data di registrazione non può essere modificata
+                            </small>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer bg-dark border-warning pt-3">
+                <div class="d-flex gap-2 w-100 justify-content-end">
+                    <button type="button" class="btn btn-outline-secondary btn-lg px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i>
+                        Annulla
+                    </button>
+                    <button type="submit" form="editDominioForm" class="btn btn-warning btn-lg px-4 fw-semibold shadow">
+                        <i class="bi bi-check-circle me-2"></i>
+                        Salva Modifiche
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
