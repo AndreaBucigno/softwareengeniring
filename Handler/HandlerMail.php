@@ -30,10 +30,10 @@ function calcolaGiorniRimanenti($scadenza) {
     $oggi = new DateTime();
     $data_scadenza = new DateTime($scadenza);
     $differenza = $oggi->diff($data_scadenza);
-    return $differenza->days;
+    return $differenza->days+1;
 }
 
-// FUNZIONE AGGIUNTA: Recupera dati domini utente
+
 function getDatiDominiUtente($ids_domini) {
     $connessione = getDBConnection();
     $domini_utente = [];
@@ -90,7 +90,7 @@ function sendMail($email_destinatario, $ids_domini, $nome_destinatario) {
             return false;
         }
         
-        $mail->setFrom('noreply@tuodominio.com', 'SOFTWAREENGINEERING');
+        $mail->setFrom('SoftwareEngineering@ingin.com', 'SOFTWAREENGINEERING');
         $mail->addAddress($email_destinatario, $nome_destinatario);
         
         $mail->isHTML(true);
@@ -126,32 +126,52 @@ ORDER BY utenti.ID ASC , domini.scadenza ASC;";
 $result = $connessione->query($sql);
 
 
-$invii = [];
-$sql_invii = "SELECT id_dominio FROM invii"; 
+
+$invii_gia_esistenti = [];
+$sql_invii = "SELECT id_dominio FROM invii WHERE DATEDIFF(CURDATE(),data_invio)<=7";
 $result_invii = $connessione->query($sql_invii);
 
 if ($result_invii && $result_invii->num_rows > 0) {
     while ($row_invio = $result_invii->fetch_assoc()) {
-        $invii[] = $row_invio['id']; 
+        $invii_gia_esistenti[] = $row_invio['id_dominio']; 
     }
 }
 
+$nuovi_invii = [];
 $tabella = [];
 
 foreach($result as $row){
-    
-    if(in_array($row['id'], $invii)){ 
+    if (in_array($row['id'], $invii_gia_esistenti)) { 
         continue;
     } else {
         $tabella[$row['id_utente']][] = $row['id']; 
-        array_push($invii, $row['id']); 
+        $nuovi_invii[] = $row['id']; 
     }
 }
 
-
 foreach ($tabella as $id_utente => $ids_domini) {
     $dati_utente = getDatiUtente($connessione, $id_utente);
-
+    if ($dati_utente) {
+        $email_destinatario = $dati_utente['email'];
+        $nome_destinatario  = $dati_utente['nome'];
+        
+        $invio_riuscito = sendMail($email_destinatario, $ids_domini, $nome_destinatario);
+        if (!$invio_riuscito) die("errore1");
+    } else {
+        die("errore2");
+    }
+    sleep(1);
 }
 
+
+$sql = "INSERT INTO invii (id_dominio, data_invio) VALUES (?, CURDATE())";
+$stmt = $connessione->prepare($sql);
+
+foreach ($nuovi_invii as $invio) {
+    $stmt->bind_param("i", $invio);
+    $stmt->execute();
+}
+
+$stmt->close();
 $connessione->close();
+
