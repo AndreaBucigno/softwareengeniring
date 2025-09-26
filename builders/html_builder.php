@@ -33,7 +33,7 @@ function buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI,
                     <!-- Form utente collassabile -->
                     <div class="collapse mb-4 form-collapse" id="formUtente">
                         <div class="card-body">
-                            <form class="needs-validation" novalidate method="POST" action="admin.php" id="adminForm">
+                            <form class="needs-validation"  method="POST" action="admin.php" id="adminForm">
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Email address</label>
                                     <input type="email" class="form-control" id="exampleInputEmail1" name="email" required>
@@ -101,7 +101,7 @@ function buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI,
 
                     <div class="collapse mb-4 form-collapse" id="formDominio">
                         <div class="card-body">
-                            <form class="needs-validation" novalidate method="POST" action="admin.php" id="adminForm2">
+                            <form class="needs-validation"  method="POST" action="admin.php" id="adminForm2">
                                 <div class="mb-3">
                                     <label for="id_utente" class="form-label">ID Utente</label>
                                     ' . $SELECT_ID . '
@@ -136,7 +136,7 @@ function buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI,
 
                     <div class="collapse mb-4 form-collapse" id="formFile">
                         <div class="card-body">
-                            <form class="needs-validation" novalidate method="POST" action="admin.php" id="adminForm3">
+                            <form class="needs-validation"  method="POST" action="admin.php" id="adminForm3">
                                 <div class="mb-3">
                                     <label for="id_utente_file" class="form-label">ID Utente</label>
                                     ' . $SELECT_ID . '
@@ -169,7 +169,7 @@ function buildHTMLBody($message, $messageType, $TABELLE_UTENTI, $TABELLA_DOMINI,
 
                     <div class="collapse mb-4 form-collapse" id="formEmail">
                         <div class="card-body">
-                            <form class="needs-validation" novalidate method="POST" action="admin.php" id="adminForm4">
+                            <form class="needs-validation"  method="POST" action="admin.php" id="adminForm4">
                             <div class="mb-3">    
                             <label for="id_utente_email" class="form-label">ID Utente</label>
                                     ' . $SELECT_ID . '

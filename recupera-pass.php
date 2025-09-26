@@ -8,10 +8,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 require_once 'assets/lib/vendor/autoload.php';
 
-// Mostra errori per debug (rimuovere in produzione)
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
-
 $message = "";
 $messageType = "";
 
@@ -138,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     <?php endif; ?>
 
-    <form class="needs-validation" method="POST" action="recupera-pass.php" novalidate>
+    <form class="needs-validation" method="POST" action="recupera-pass.php" >
         <div class="mb-3">
             <label for="recoveryEmail" class="form-label">Email address</label>
             <input type="email" class="form-control" id="recoveryEmail" name="email" placeholder="Inserisci l'email" required>
