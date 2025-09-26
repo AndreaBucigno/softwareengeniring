@@ -19,6 +19,8 @@ function getMailerInstance() {
         $mail->Password   = 'Andre@2308.11';
         $mail->SMTPSecure = 'ssl';
         $mail->Port       = 465;
+        $mail->setFrom('bucignoscuola@gmail.com', 'SoftwareEngineering');
+
         
         return $mail;
     } catch (Exception $e) {
