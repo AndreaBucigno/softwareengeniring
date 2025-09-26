@@ -13,7 +13,7 @@ function handleUserForm($postData)
     $ruolo = trim($postData["ruolo"]);
     $dataRegistrazione = trim($postData["dataRegistrazione"]);
     $Attivo = trim($postData["Attivo"]);
-    $password = trim($postData["password"]);
+    $password = password_hash(trim($_POST['password']),PASSWORD_DEFAULT);
     $timeStamp = trim($postData["timeStamp"]);
     
     

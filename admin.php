@@ -86,7 +86,7 @@ if (isset($_POST['modifica_utente_id'])) {
     $ruolo = trim($_POST['ruolo']);
     $data_registrazione = trim($_POST['dataRegistrazione']);
     $attivo = trim($_POST['Attivo']);
-    $password = trim($_POST['password']); // Può essere vuota
+    $password = password_hash(trim($_POST['password']),PASSWORD_DEFAULT);
 
     $result = modificaUtente($user_id, $email, $nome, $numero, $azienda, $ruolo, $data_registrazione, $attivo, $password);
     $message = $result['message'];
